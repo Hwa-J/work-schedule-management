@@ -1,0 +1,40 @@
+{
+  "userInfo": [
+    { "name": "Bruce" },
+    { "name": "Samuel" },
+    { "name": "Maria" },
+    { "name": "John" },
+    { "name": "Tim" },
+    { "name": "Mark" }
+  ],
+  "events": [
+    {
+      "userId": 123,
+      "id": 1,
+      "start": "2023-03-29",
+      "end": "2023-03-31",
+      "title": "A"
+    },
+    {
+      "userId": 123,
+      "id": 2,
+      "start": "2023-03-01",
+      "end": "2023-03-01",
+      "title": "B"
+    },
+    {
+      "userId": 45,
+      "id": 3,
+      "start": "2023-03-03",
+      "end": "2023-03-05",
+      "title": "C"
+    },
+    {
+      "userId": 1,
+      "id": 4,
+      "start": "2023-03-11",
+      "end": "2023-03-13",
+      "title": "D"
+    }
+  ]
+}
