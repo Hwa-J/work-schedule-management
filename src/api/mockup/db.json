@@ -1,11 +1,10 @@
 {
-  "userInfo": [
-    { "name": "Bruce" },
-    { "name": "Samuel" },
-    { "name": "Maria" },
-    { "name": "John" },
-    { "name": "Tim" },
-    { "name": "Mark" }
+  "users": [
+    {
+      "email": "test@mail.com",
+      "password": "$2a$10$Tmf4bMX.7AdjwN.sjbsA8.RglPdRN21vFuuuNvZuz0oV0OFUalsVO",
+      "id": 1
+    }
   ],
   "events": [
     {
