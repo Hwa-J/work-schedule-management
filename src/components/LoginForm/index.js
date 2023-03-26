@@ -37,40 +37,34 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
-      <Container className="panel">
-        <Form>
-          <Form.Group as={Row} className="mb-3" controlId="formId">
-            <Col sm>
-              <Form.Control
-                type="string"
-                placeholder="ID"
-                value={loginId}
-                onChange={handleChangeIdValue}
-              />
-            </Col>
-          </Form.Group>
+    <Form>
+      <Form.Group as={Row} className="mb-3" controlId="formId">
+        <Col sm>
+          <Form.Control
+            type="string"
+            placeholder="ID"
+            value={loginId}
+            onChange={handleChangeIdValue}
+          />
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} className="mb-3" controlId="formPassword">
+        <Col sm>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={loginPassword}
+            onChange={handleChangePasswordValue}
+          />
+        </Col>
+      </Form.Group>
 
-          <Form.Group as={Row} className="mb-3" controlId="formPassword">
-            <Col sm>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={loginPassword}
-                onChange={handleChangePasswordValue}
-              />
-            </Col>
-          </Form.Group>
-          <br />
-
-          <div className="d-grid gap-1">
-            <Button variant="secondary" type="submit" onClick={handleSubmit}>
-              로그인
-            </Button>
-          </div>
-        </Form>
-      </Container>
-    </div>
+      <div className="centerAlign">
+        <Button type="submit" onClick={handleSubmit}>
+          로그인
+        </Button>
+      </div>
+    </Form>
   );
 };
 
