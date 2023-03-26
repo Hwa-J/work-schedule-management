@@ -19,7 +19,7 @@ const LogIn = () => {
         </Link>
       </TemporaryBtns>
       <LoginLayout className="centerAlign">
-        <FormContainer width="450px" color="#eee">
+        <FormContainer width="450px">
           <LoginForm />
         </FormContainer>
       </LoginLayout>
