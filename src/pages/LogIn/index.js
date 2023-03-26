@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { TemporaryBtns, LoginLayout } from './style';
 import Button from 'react-bootstrap/Button';
+import { FormContainer } from 'components/Common/FormContainer';
 import LoginForm from 'components/LoginForm';
 
 const LogIn = () => {
@@ -18,7 +19,9 @@ const LogIn = () => {
         </Link>
       </TemporaryBtns>
       <LoginLayout className="centerAlign">
-        <LoginForm />
+        <FormContainer width="450px" color="#eee">
+          <LoginForm />
+        </FormContainer>
       </LoginLayout>
     </>
   );

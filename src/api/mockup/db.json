@@ -4,6 +4,11 @@
       "email": "test@mail.com",
       "password": "$2a$10$Tmf4bMX.7AdjwN.sjbsA8.RglPdRN21vFuuuNvZuz0oV0OFUalsVO",
       "id": 1
+    },
+    {
+      "email": "test2@mail.com",
+      "password": "$2a$10$3heJenk5A6EQL0BH/1Tli.AI.iXw8A58k4NgC6GpFgYfPFEhxpwO2",
+      "id": 2
     }
   ],
   "events": [
