@@ -1,0 +1,39 @@
+{
+  "users": [
+    {
+      "email": "test@mail.com",
+      "password": "$2a$10$Tmf4bMX.7AdjwN.sjbsA8.RglPdRN21vFuuuNvZuz0oV0OFUalsVO",
+      "id": 1
+    }
+  ],
+  "events": [
+    {
+      "userId": 123,
+      "id": 1,
+      "start": "2023-03-29",
+      "end": "2023-03-31",
+      "title": "A"
+    },
+    {
+      "userId": 123,
+      "id": 2,
+      "start": "2023-03-01",
+      "end": "2023-03-01",
+      "title": "B"
+    },
+    {
+      "userId": 45,
+      "id": 3,
+      "start": "2023-03-03",
+      "end": "2023-03-05",
+      "title": "C"
+    },
+    {
+      "userId": 1,
+      "id": 4,
+      "start": "2023-03-11",
+      "end": "2023-03-13",
+      "title": "D"
+    }
+  ]
+}
