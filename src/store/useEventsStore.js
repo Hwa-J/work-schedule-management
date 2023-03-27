@@ -8,9 +8,7 @@ const customEventsData = INIT.map((event) => ({
   ...event,
   start: new Date(event.start),
   end: new Date(event.end),
-
   isDraggable: event.user_account_id === USER_ID,
-  allDay: true,
 }));
 
 const useEventsStore = create((set) => ({
@@ -35,6 +33,20 @@ const useEventsStore = create((set) => ({
             return { filteredEvents: watchDutyData };
           default:
             return { filteredEvents: state.events };
+        }
+      }),
+    // 로그인 유저의 일정만 보기 필터
+    // todo: category 셀렉터 filter와 연동
+    filterMyEvents: (boolean) =>
+      set((state) => {
+        if (boolean) {
+          return {
+            filteredEvents: state.events.filter(
+              (event) => event.user_account_id === USER_ID,
+            ),
+          };
+        } else {
+          return { filteredEvents: state.events };
         }
       }),
   },
