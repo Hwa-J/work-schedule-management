@@ -1,6 +1,6 @@
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import * as S from './style';
-import { CategorySelector } from '../CategorySelector';
+import { FilterTool } from '../FilterTool';
 
 // 툴 바 커스텀
 export const ToolBarComponent = (props) => {
@@ -12,7 +12,7 @@ export const ToolBarComponent = (props) => {
 
   return (
     <S.ToolBar className="rbc-toolbar">
-      <CategorySelector />
+      <FilterTool />
       <div className="rbc-btn-container centerAlign">
         <button
           type="button"
