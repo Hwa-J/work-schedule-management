@@ -1,16 +1,14 @@
 import { momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment-timezone';
-// import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useCallback, useState } from 'react';
 import { INIT, USER_ID } from 'api/mockup';
-import { StyledCalendar, StyledEventBar } from './style';
+import * as S from './style';
 
 moment.tz.setDefault('Asia/Seoul');
 const localizer = momentLocalizer(moment);
-// export const DnDCalendar = withDragAndDrop(Calendar);
 
 // 데이터 재설정 (user_account_id가 일치하는 것만 드래그 가능)
 const reWriteData = INIT.map((event) => ({
@@ -113,7 +111,7 @@ export const MainCalendar = () => {
 
   return (
     <div>
-      <StyledCalendar
+      <S.MainCalendar
         defaultDate={moment().toDate()}
         defaultView="month"
         draggableAccessor="isDraggable"
@@ -146,8 +144,8 @@ const EventComponent =
   ({ events, handleChange }) =>
   (props) => {
     return (
-      <StyledEventBar title={props.event.email}>
+      <S.EventBar title={props.event.email}>
         <h5 onClick={handleChange}>{props.event.name}</h5>
-      </StyledEventBar>
+      </S.EventBar>
     );
   };
