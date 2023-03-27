@@ -2,7 +2,7 @@ import { useEventsActions } from 'store/useEventsStore';
 import * as S from './style';
 import { Form } from 'react-bootstrap';
 
-export const CategorySelector = () => {
+export const FilterTool = () => {
   const { filter } = useEventsActions();
 
   const handleSelectedValue = ({ target }) => {
