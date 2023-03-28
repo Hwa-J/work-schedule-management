@@ -9,6 +9,11 @@
       "email": "test2@mail.com",
       "password": "$2a$10$3heJenk5A6EQL0BH/1Tli.AI.iXw8A58k4NgC6GpFgYfPFEhxpwO2",
       "id": 2
+    },
+    {
+      "email": "user@naver.com",
+      "password": "$2a$10$OoqbHSZ.b6Ni3DMiZ6UwkuYB5JLOkYinakzn08wNM8AZvugDV9ML6",
+      "id": "user1"
     }
   ],
   "events": [

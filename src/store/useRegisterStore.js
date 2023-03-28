@@ -2,15 +2,17 @@ import create from 'zustand'
 
 const useRegisterStore = create((set) => ({
     id: '',
-    usename: '',
+    username: '',
     email: '',
     password: '',
-    // confirmPwd: '',
+    confirmPwd: '',
+    isPwdMatch: false,
     setId: (id) => set({ id }),
-    setUsename: (usename) => set({ usename }),
+    setUsername: (username) => set({ username }),
     setEmail: (email) => set({ email }),
     setPassword: (password) => set({ password }),
-    // setConfirmPassword: (confirmPassword) => set({ confirmPassword }),
+    setConfirmPwd: (confirmPwd) => set({ confirmPwd }),
+    setIsPwdMatch: (isPwdMatch) => set({ isPwdMatch }),
 }))
 
 export default useRegisterStore;
