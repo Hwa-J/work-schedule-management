@@ -15,6 +15,8 @@ const useEventsStore = create((set) => ({
   events: customEventsData,
   filteredEvents: [],
   actions: {
+    // 일정 추가
+    add: (value) => set((state) => ({ events: [...state.events, value] })),
     // category 셀렉터에 따라 events 데이터 재계산
     filter: (value) =>
       set((state) => {
