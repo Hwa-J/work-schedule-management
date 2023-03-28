@@ -1,7 +1,7 @@
 import { MainCalendar } from 'components/Main/MainCalendar';
 import useCookies from 'react-cookie/cjs/useCookies';
 import Button from 'react-bootstrap/Button';
-import { useAuthStore } from 'store';
+import { useAuthStore } from 'store/store.js';
 import { Link } from 'react-router-dom';
 
 const Main = () => {
@@ -20,7 +20,8 @@ const Main = () => {
 
   // 전역 State에 토큰이 있을 때, state 값 리셋으로 만들기
   const handleLogout = () => {
-    setStoreToken('');
+    localStorage.removeItem('access_token');
+    setStoreToken(null);
   };
 
   return (

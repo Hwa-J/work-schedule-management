@@ -23,7 +23,7 @@ export const useExampleStore = create((setState) => ({
 export const useAuthStore = create(
   persist(
     (set) => ({
-      token: '',
+      token: null,
       setToken: (token) => {
         set((state) => ({ token: token }));
       },

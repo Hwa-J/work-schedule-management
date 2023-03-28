@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 import axios from 'axios';
 import useCookies from 'react-cookie/cjs/useCookies';
-import { useAuthStore } from 'store';
+import { useAuthStore } from 'store/store.js';
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
