@@ -1,9 +1,35 @@
 import { MainCalendar } from 'components/Main/MainCalendar';
+import useCookies from 'react-cookie/cjs/useCookies';
+import Button from 'react-bootstrap/Button';
+import { useAuthStore } from 'store';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
+  const [cookies, setCookies, removeCookies] = useCookies(['access_token']);
+  const setStoreToken = useAuthStore((state) => state.setToken);
+
+  // 쿠키에 토큰이 있을때 지우기
+  // const handleLogout = () => {
+  //   removeCookies('access_token');
+  // };
+
+  // 로컬스토리지에 토큰이 있을 때 지우기
+  // const handleLogout = () => {
+  //   localStorage.removeItem('access_token');
+  // };
+
+  // 전역 State에 토큰이 있을 때, state 값 리셋으로 만들기
+  const handleLogout = () => {
+    setStoreToken('');
+  };
+
   return (
     <div>
       메인페이지
+      <Button onClick={handleLogout}>로그아웃</Button>
+      <Link to="/mypage">
+        <Button variant="outline-dark">마이페이지 이동하기</Button>
+      </Link>
       <MainCalendar />
     </div>
   );

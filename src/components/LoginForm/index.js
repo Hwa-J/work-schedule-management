@@ -2,13 +2,19 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import { useState } from 'react';
 import axios from 'axios';
+import useCookies from 'react-cookie/cjs/useCookies';
+import { useAuthStore } from 'store';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const setStoreToken = useAuthStore((state) => state.setToken);
+  const navigate = useNavigate();
+
+  // const [cookies, setCookies] = useCookies(['access_token']);
 
   const handleChangeIdValue = (e) => {
     setLoginId(e.target.value);
@@ -17,6 +23,7 @@ const LoginForm = () => {
     setLoginPassword(e.target.value);
   };
 
+  // 로그인 버튼 클릭시,post요청 -> 성공하면 쿠키에 토큰값 저장
   const handleSubmit = (e) => {
     e.preventDefault();
     if (loginId === '' || loginPassword === '') {
@@ -28,10 +35,18 @@ const LoginForm = () => {
           password: loginPassword,
         })
         .then(function (res) {
-          console.log(res.data);
+          // 쿠키에 토큰 저장하기 (보통은 서버에서 넣어서 보내기 때문에 필요없음.  json서버 테스트를 위한 코드)
+          // setCookies('access_token', res.data.accessToken);
+
+          // 로컬 스토리지에 토큰 저장하기
+          // localStorage.setItem('access_token', res.data.accessToken);
+
+          //전역 State에 토큰 저장하기
+          setStoreToken(res.data.accessToken);
         })
         .catch(function (error) {
           console.log(error);
+          alert('ID와 비밀번호를 확인해 주세요.');
         });
     }
   };
