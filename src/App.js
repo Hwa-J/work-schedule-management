@@ -5,6 +5,7 @@ import LogIn from 'pages/LogIn';
 import SignUp from 'pages/SignUp';
 import Main from 'pages/Main';
 import MyInfo from 'pages/MyInfo';
+import RoleManage from 'pages/RoleManage';
 import NotFound from 'pages/NotFound';
 import useCookies from 'react-cookie/cjs/useCookies';
 import { useAuthStore } from 'store/store.js';
@@ -40,6 +41,7 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route path="/main" element={<Main />} />
           <Route path="/mypage" element={<MyInfo />} />
+          <Route path="/role" element={<RoleManage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
