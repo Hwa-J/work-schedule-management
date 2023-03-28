@@ -45,8 +45,8 @@ export const MainCalendar = () => {
     [],
   );
 
-  // 달력에서 드래그로 스케쥴 추가
-  const handleSelectSlot = ({ start, end }) => {
+  // 달력에서 드래그로 일정 추가
+  const addEvent = ({ start, end }) => {
     // todo: 모달창으로 category, name 입력값 받기
     const name = window.prompt('New Event name');
     if (name) {
@@ -62,20 +62,14 @@ export const MainCalendar = () => {
     }
   };
 
-  // 날짜 길이 조정으로 스케쥴 수정
-  const onEventResize = (data) => {
+  // 날짜 길이 조정, 옮기기로 일정 수정
+  const editEvent = (data) => {
     // const { start, end, event } = data;
     edit(data);
   };
 
-  //날짜 옮기기
-  const onEventDrop = (data) => {
-    // const { start, end, event } = data;
-    edit(data);
-  };
-
-  // 날짜 더블클릭 삭제
-  const onDoubleClickEvent = (data) => {
+  // 날짜 더블클릭 일정 삭제
+  const deleteEvent = (data) => {
     // user_account_id가 일치하는 것만 삭제 가능
     if (data.user_account_id !== USER_ID) return;
     // todo: 모달창으로 삭제 여부 묻기
@@ -94,10 +88,10 @@ export const MainCalendar = () => {
         eventPropGetter={eventPropGetter}
         events={filteredEvents.length === 0 ? events : filteredEvents}
         localizer={localizer}
-        onEventDrop={onEventDrop}
-        onEventResize={onEventResize}
-        onDoubleClickEvent={onDoubleClickEvent}
-        onSelectSlot={handleSelectSlot}
+        onEventDrop={editEvent}
+        onEventResize={editEvent}
+        onDoubleClickEvent={deleteEvent}
+        onSelectSlot={addEvent}
         resizable
         selectable
         popup
