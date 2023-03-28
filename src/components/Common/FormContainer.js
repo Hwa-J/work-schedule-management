@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const FormContainer = styled.div`
+  position: relative;
   width: ${(props) => props.width};
   background-color: ${(props) => props.color || '#eee'};
   border-radius: 20px;

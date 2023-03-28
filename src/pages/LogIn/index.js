@@ -11,9 +11,6 @@ const LogIn = () => {
         <Link to="/main">
           <Button variant="outline-dark">메인화면 이동하기</Button>
         </Link>
-        <Link to="/signup">
-          <Button variant="outline-dark">회원가입화면 이동하기</Button>
-        </Link>
         <Link to="/mypage">
           <Button variant="outline-dark">마이페이지 이동하기</Button>
         </Link>
@@ -21,6 +18,9 @@ const LogIn = () => {
       <LoginLayout className="centerAlign">
         <FormContainer width="450px">
           <LoginForm />
+          <Link to="/signup" className="signupLinkBtn">
+            register
+          </Link>
         </FormContainer>
       </LoginLayout>
     </>
