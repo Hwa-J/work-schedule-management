@@ -12,7 +12,6 @@ const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const setStoreToken = useAuthStore((state) => state.setToken);
-  const navigate = useNavigate();
 
   // const [cookies, setCookies] = useCookies(['access_token']);
 

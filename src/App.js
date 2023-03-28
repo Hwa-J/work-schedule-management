@@ -12,21 +12,19 @@ import RequireAuth from 'RequireAuth';
 import { useEffect } from 'react';
 
 function App() {
-  // 쿠키에 토큰이 있을때
+  // 쿠키에 토큰이 있을때, token 값 담긴 cookie.
   // const [cookies] = useCookies(['access_token']);
   // const token = cookies.access_token;
 
-  // 로컬스토리지에 토큰이 있을때
-  // const { token } = useTokenStore();
-
-  // 전역 state에 토큰이 있을때
+  // 전역 state에 토큰이 있을때, token 값 담긴 store.
   const { token } = useAuthStore();
 
+  // 토큰 유무 확인용 console.  작업 후 삭제
   useEffect(() => {
-    if (!token) {
-      console.log('로그아웃 상태');
+    if (token) {
+      console.log('토큰을 store에 저장했습니다' + token);
     } else {
-      console.log(token);
+      console.log('store 비워짐' + token);
     }
   }, [token]);
 
@@ -34,7 +32,7 @@ function App() {
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
-        {/* <Route path="/" element={token ? <Main /> : <LogIn />} /> */}
+        <Route path="/" element={token ? <Main /> : <LogIn />} />
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route element={<RequireAuth />}>
