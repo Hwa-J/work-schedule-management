@@ -15,6 +15,33 @@ const useEventsStore = create((set) => ({
   events: customEventsData,
   filteredEvents: [],
   actions: {
+    // 일정 추가
+    add: (data) =>
+      set((state) => ({
+        events: [...state.events, data],
+      })),
+    // 일정 수정
+    edit: (data) =>
+      set((state) => {
+        const { start, end, event } = data;
+        const editEvents = state.events.map((e) => {
+          if (e.event_id === event.event_id) {
+            e.start = start;
+            e.end = end;
+          }
+          return e;
+        });
+        return { events: [...editEvents] };
+      }),
+    // 일정 삭제
+    del: (data) =>
+      set((state) => {
+        const { event_id } = data;
+        const filteredEvents = state.events.filter(
+          (e) => e.event_id !== event_id,
+        );
+        return { events: [...filteredEvents] };
+      }),
     // category 셀렉터에 따라 events 데이터 재계산
     filter: (value) =>
       set((state) => {
