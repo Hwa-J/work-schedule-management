@@ -95,7 +95,7 @@ export const MainCalendar = () => {
         resizable
         selectable
         popup
-        style={{ width: '90vw', height: '70vh' }}
+        style={{ width: 'auto', height: '80vh' }}
         views={''}
         onNavigate={handleNavigation}
         components={{
