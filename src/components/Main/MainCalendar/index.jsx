@@ -4,6 +4,9 @@ import {
   useEventsActions,
   useFilteredEvents,
 } from 'store/useEventsStore';
+import { useModalsActions } from 'store/useModalStore';
+import { useAddEventValueActions } from 'store/useAddEventValueStore';
+import { getDateToSlashForm } from 'util/getDateToCustomForm';
 import { momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment-timezone';
@@ -29,7 +32,9 @@ const handleChange = () => {
 export const MainCalendar = () => {
   const events = useEvents();
   const filteredEvents = useFilteredEvents();
-  const { add, edit, del } = useEventsActions();
+  const { edit, del } = useEventsActions();
+  const { showAddEventNomalModal } = useModalsActions();
+  const { setAddEventValue, resetAddEventValue } = useAddEventValueActions();
 
   console.log(events);
   console.log(filteredEvents);
@@ -46,20 +51,16 @@ export const MainCalendar = () => {
   );
 
   // 달력에서 드래그로 일정 추가
-  const addEvent = ({ start, end }) => {
-    // todo: 모달창으로 category, name 입력값 받기
-    const name = window.prompt('New Event name');
-    if (name) {
-      add({
-        start,
-        end: new Date(end),
-        name,
-        category: '연차', // 테스트용 고정값
-        user_account_id: '001', // 테스트용 고정값
-        event_id: `${events.length + 1}`, // 테스트용 고정값
-        isDraggable: '001' === USER_ID, // 테스트용 고정값
-      });
-    }
+  const addEvent = async ({ start, end }) => {
+    // 이전 모달창에서 받은 입력값 초기화
+    await resetAddEventValue();
+    // 'YYYY/MM/DD' 날짜형식으로 변경
+    const formatStart = getDateToSlashForm(start);
+    const formatEnd = getDateToSlashForm(end);
+    // 일정 추가할 날짜값 store 저장
+    await setAddEventValue({ start: formatStart, end: formatEnd });
+    // 일정 추가 모달창 열기
+    await showAddEventNomalModal(true);
   };
 
   // 날짜 길이 조정, 옮기기로 일정 수정
