@@ -26,9 +26,9 @@ function App() {
 
   useEffect(() => {
     if (!token) {
-      console.log('토큰을 store에 저장했습니다' + token);
-    } else {
       console.log('store 비워짐' + token);
+    } else {
+      console.log('토큰을 store에 저장했습니다' + token);
     }
   }, [token]);
 
