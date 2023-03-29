@@ -1,5 +1,9 @@
 import { useCallback } from 'react';
-import { useEvents, useFilteredEvents } from 'store/useEventsStore';
+import {
+  useEvents,
+  useEventsActions,
+  useFilteredEvents,
+} from 'store/useEventsStore';
 import { momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment-timezone';
@@ -7,19 +11,10 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { ToolBarComponent } from './CalendarToolBar';
 import * as S from './style';
+import { USER_ID } from 'api/mockup';
 
 moment.tz.setDefault('Asia/Seoul');
 const localizer = momentLocalizer(moment);
-
-// 데이터 재설정 (user_account_id가 일치하는 것만 드래그 가능)
-// const reWriteData = INIT.map((event) => ({
-//   ...event,
-//   start: new Date(event.start),
-//   end: new Date(event.end),
-
-//   isDraggable: event.user_account_id === USER_ID,
-//   allDay: true,
-// }));
 
 // todo: 네비게이션 클릭시 실행될 이벤트
 const handleNavigation = (date, view, action) => {
@@ -34,6 +29,7 @@ const handleChange = () => {
 export const MainCalendar = () => {
   const events = useEvents();
   const filteredEvents = useFilteredEvents();
+  const { add, edit, del } = useEventsActions();
 
   console.log(events);
   console.log(filteredEvents);
@@ -49,69 +45,39 @@ export const MainCalendar = () => {
     [],
   );
 
-  // 달력에서 드래그로 스케쥴 추가
-  // const handleSelectSlot = useCallback(
-  //   ({ data, start, end }) => {
-  //     console.log(`data: ${data}, start: ${start}, end: ${end}`);
-  //     const name = window.prompt('New Event name');
-  //     if (name) {
-  //       setEvents((prev) => [
-  //         ...prev,
-  //         { start, end: new Date(end), name, allDay: true },
-  //       ]);
-  //       console.log(start.getMonth(), start.getDate());
-  //       console.log(end.getMonth(), end.getDate());
-  //     }
-  //   },
-  //   [setEvents],
-  // );
+  // 달력에서 드래그로 일정 추가
+  const addEvent = ({ start, end }) => {
+    // todo: 모달창으로 category, name 입력값 받기
+    const name = window.prompt('New Event name');
+    if (name) {
+      add({
+        start,
+        end: new Date(end),
+        name,
+        category: '연차', // 테스트용 고정값
+        user_account_id: '001', // 테스트용 고정값
+        event_id: `${events.length + 1}`, // 테스트용 고정값
+        isDraggable: '001' === USER_ID, // 테스트용 고정값
+      });
+    }
+  };
 
-  // // 날짜 길이 조정
-  // const onEventResize = (data) => {
-  //   const { start, end, event } = data;
+  // 날짜 길이 조정, 옮기기로 일정 수정
+  const editEvent = (data) => {
+    // const { start, end, event } = data;
+    edit(data);
+  };
 
-  //   setEvents((prev) => {
-  //     prev.forEach((e) => {
-  //       if (e.event_id === event.event_id) {
-  //         e.start = start;
-  //         e.end = end;
-  //       }
-  //     });
-  //     return [...prev];
-  //   });
-  // };
-
-  // // 날짜 옮기기
-  // const onEventDrop = (data) => {
-  //   const { start, end, event } = data;
-
-  //   setEvents((prev) => {
-  //     prev.forEach((e) => {
-  //       if (e.event_id === event.event_id) {
-  //         e.start = start;
-  //         e.end = end;
-  //       }
-  //     });
-
-  //     return [...prev];
-  //   });
-  // };
-
-  // // 날짜 더블클릭 삭제
-  // const onDoubleClickEvent = useCallback(
-  //   (data) => {
-  //     // user_account_id가 일치하는 것만 삭제 가능
-  //     if (data.user_account_id !== USER_ID) return;
-
-  //     // todo: 모달창으로 삭제 여부 묻기
-  //     const filteredEvents = events.filter(
-  //       (event) => event.event_id !== data.event_id,
-  //     );
-  //     console.log(filteredEvents);
-  //     setEvents([...filteredEvents]);
-  //   },
-  //   [events],
-  // );
+  // 날짜 더블클릭 일정 삭제
+  const deleteEvent = (data) => {
+    // user_account_id가 일치하는 것만 삭제 가능
+    if (data.user_account_id !== USER_ID) return;
+    // todo: 모달창으로 삭제 여부 묻기
+    const answer = window.confirm('정말 삭제하시겠습니까?');
+    if (answer) {
+      del(data);
+    }
+  };
 
   return (
     <div>
@@ -122,10 +88,10 @@ export const MainCalendar = () => {
         eventPropGetter={eventPropGetter}
         events={filteredEvents.length === 0 ? events : filteredEvents}
         localizer={localizer}
-        // onEventDrop={onEventDrop}
-        // onEventResize={onEventResize}
-        // onDoubleClickEvent={onDoubleClickEvent}
-        // onSelectSlot={handleSelectSlot}
+        onEventDrop={editEvent}
+        onEventResize={editEvent}
+        onDoubleClickEvent={deleteEvent}
+        onSelectSlot={addEvent}
         resizable
         selectable
         popup
