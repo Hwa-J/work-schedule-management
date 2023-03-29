@@ -11,6 +11,7 @@ import useCookies from 'react-cookie/cjs/useCookies';
 import { useAuthStore } from 'store/store.js';
 import RequireAuth from 'RequireAuth';
 import { useEffect } from 'react';
+import { Layout } from 'components/Main/Layout';
 
 function App() {
   // 쿠키에 토큰이 있을때
@@ -39,9 +40,11 @@ function App() {
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         {/* <Route element={<RequireAuth />}> */}
-        <Route path="/main" element={<Main />} />
-        <Route path="/mypage" element={<MyInfo />} />
-        <Route path="/role" element={<RoleManage />} />
+        <Route element={<Layout />}>
+          <Route path="/main" element={<Main />} />
+          <Route path="/mypage" element={<MyInfo />} />
+          <Route path="/role" element={<RoleManage />} />
+        </Route>
         {/* </Route> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
