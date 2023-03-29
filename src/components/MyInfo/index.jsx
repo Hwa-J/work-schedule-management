@@ -7,13 +7,14 @@ import { FormContainer } from 'components/Common/FormContainer'
 
 const MyInfoPage = () => {
 
-    const [userId, setUserId] = useState({ id: '', email: '' })
+    const [username, setUsername] = useState('');
+    const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
         //백엔드에서 받아오는회원정보
         axios.get('/api/users')
             .then(response => {
-                setUserId(response.data);
+                setUserInfo(response.data);
             })
             .catch(error => {
                 console.log(error);
@@ -24,24 +25,20 @@ const MyInfoPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put('api/users', userId)
+        axios.put('api/users', userInfo)
             .then(response => {
                 //수정된 회원정보
                 console.log(response.data);
+                setUserInfo(response.data);
             })
             .catch(error => {
                 console.log(error);
             })
     }
 
-    const handleChange = (event) => {
-        const { id, value } = event.target;
-        setUserId(prevUserId => (
-            {
-                ...prevUserId,
-                [id]: value
-            }));
-    };
+    // if (!userInfo) {
+    //     return <div>로딩중</div>
+    // }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -54,8 +51,9 @@ const MyInfoPage = () => {
                             </Form.Label>
                             <Form.Control
                                 type='id'
-                                value={userId.id}
-                                onChange={handleChange}
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required='required'
                             />
                         </InputBox>
                     </Form.Group>
