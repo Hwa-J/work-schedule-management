@@ -5,9 +5,7 @@ import styled from 'styled-components';
 export const SideBar = styled.nav.attrs({
   className: 'centerAlign',
 })`
-  // 레이아웃 디자인에 따라 height 값 변경
   height: 100vh;
-  /* height: calc(100vh - 50px); */
   justify-content: space-around;
   background-color: #fafafc;
   &,
