@@ -6,6 +6,7 @@ import {
 } from 'store/useEventsStore';
 import { useModalsActions } from 'store/useModalStore';
 import { useAddEventValueActions } from 'store/useAddEventValueStore';
+import { useDeleteEventValueActions } from 'store/useDeleteEventValueStore';
 import { getDateToSlashForm } from 'util/getDateToCustomForm';
 import { momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -32,9 +33,10 @@ const handleChange = () => {
 export const MainCalendar = () => {
   const events = useEvents();
   const filteredEvents = useFilteredEvents();
-  const { edit, del } = useEventsActions();
-  const { showAddEventNomalModal } = useModalsActions();
+  const { edit } = useEventsActions();
+  const { showAddEventNomalModal, showDeleteEventModal } = useModalsActions();
   const { setAddEventValue, resetAddEventValue } = useAddEventValueActions();
+  const { setDeleteEventValue } = useDeleteEventValueActions();
 
   console.log(events);
   console.log(filteredEvents);
@@ -70,14 +72,13 @@ export const MainCalendar = () => {
   };
 
   // 날짜 더블클릭 일정 삭제
-  const deleteEvent = (data) => {
+  const deleteEvent = async (data) => {
     // user_account_id가 일치하는 것만 삭제 가능
+    // todo: 관리자 계정은 모든 일정 삭제 가능하도록 수정
     if (data.user_account_id !== USER_ID) return;
-    // todo: 모달창으로 삭제 여부 묻기
-    const answer = window.confirm('정말 삭제하시겠습니까?');
-    if (answer) {
-      del(data);
-    }
+    await setDeleteEventValue(data);
+    // 일정 삭제 확인 모달창 열기
+    await showDeleteEventModal(true);
   };
 
   return (
