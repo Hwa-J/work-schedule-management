@@ -11,6 +11,6 @@ const useRegisterStore = create((set) => ({
   setEmail: (email) => set({ email }),
   setPassword: (password) => set({ password }),
   // setConfirmPassword: (confirmPassword) => set({ confirmPassword }),
-}))
+}));
 
 export default useRegisterStore;

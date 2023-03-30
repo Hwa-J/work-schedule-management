@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FormLabel } from 'react-bootstrap';
+import SearchBar from 'components/SearchBar';
 
 const RoleManageForm = () => {
   const handleUpdate = (e) => {
@@ -12,16 +13,7 @@ const RoleManageForm = () => {
 
   return (
     <>
-      <Form>
-        <Form.Group as={Row} className="mb-3" controlId="formSearch">
-          <FormLabel column sm={2}>
-            검색
-          </FormLabel>
-          <Col sm>
-            <Form.Control type="text" placeholder="검색할 이름을 입력하세요" />
-          </Col>
-        </Form.Group>
-      </Form>
+      <SearchBar />
       <Form>
         <Form.Group as={Row} className="mb-3" controlId="formName">
           <FormLabel column sm={2}>
