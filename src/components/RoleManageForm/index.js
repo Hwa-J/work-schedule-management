@@ -7,7 +7,7 @@ import SearchBar from 'components/SearchBar';
 import { useSearchStore } from 'store/store';
 
 const RoleManageForm = () => {
-  const { email } = useSearchStore();
+  const { name, email } = useSearchStore();
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const RoleManageForm = () => {
             이름
           </FormLabel>
           <FormLabel column sm={10}>
-            아직 검색되지 않았습니다
+            {name === '' ? '아직 검색되지 않았습니다' : name}
           </FormLabel>
         </Form.Group>
 

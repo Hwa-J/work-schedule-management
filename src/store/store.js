@@ -12,14 +12,7 @@ export const useExampleStore = create((setState) => ({
   },
 }));
 
-// export const useAuthStore = create(
-//   persist((set) => ({
-//     token: '',
-//     setToken: (token) => set((state) => ({ token: token })),
-//   })),
-// );
-
-// 새로고침해도 state 값이 초괴화 되지 않도록, persist 옵션 사용
+// 로그인 토큰 store. 새로고침해도 state 값이 초괴화 되지 않도록 persist 옵션 사용
 export const useAuthStore = create(
   persist(
     (set) => ({
@@ -32,8 +25,13 @@ export const useAuthStore = create(
   ),
 );
 
+// 유저 검색 store
 export const useSearchStore = create((set) => ({
+  name: '',
   email: '',
+  setName: (name) => {
+    set((state) => ({ name: name }));
+  },
   setEmail: (email) => {
     set((state) => ({ email: email }));
   },

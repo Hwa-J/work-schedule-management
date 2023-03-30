@@ -6,14 +6,16 @@ import { useRef, useState, useEffect } from 'react';
 import { SearchBarContainer } from './style';
 import SearchList from './SearchList';
 import axios from 'axios';
-import { useSearchStore } from 'store/store';
+import { useSearchStore, useAuthStore } from 'store/store';
 
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
   const [opened, setOpened] = useState(false);
   const [users, setUsers] = useState(null);
   const inputRef = useRef();
+  const setStoreName = useSearchStore((state) => state.setName);
   const setStoreEmail = useSearchStore((state) => state.setEmail);
+  const { token } = useAuthStore();
 
   const handleChange = (e) => {
     setKeyword(e.target.value);
@@ -25,9 +27,13 @@ const SearchBar = () => {
       alert('검색어를 입력해 주세요');
     } else {
       axios
-        .get('http://localhost:4000/users')
+        .get(`http://54.180.9.59:8080/api/users?name=${keyword}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then(function (res) {
-          setUsers(res.data);
+          setUsers(res.data.users);
         })
         .catch(function (error) {
           console.log(error);
@@ -37,10 +43,11 @@ const SearchBar = () => {
     inputRef.current.blur();
   };
 
-  const handleListClick = (user) => {
+  const handleListClick = (name, email) => {
     setOpened(false);
     setKeyword('');
-    setStoreEmail(user);
+    setStoreName(name);
+    setStoreEmail(email);
   };
 
   return (

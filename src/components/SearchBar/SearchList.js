@@ -12,8 +12,12 @@ const SearchList = ({ onClick, users }) => {
           <Col sm={10}>
             <ul className="searchListWrapper">
               {users.map((user) => (
-                <li key={user.id} onClick={() => onClick(user.email)}>
-                  {user.email}
+                <li
+                  key={user.id}
+                  onClick={() => onClick(user.name, user.email)}
+                >
+                  <span className="name">{user.name}</span>
+                  <span className="email">{user.email}</span>
                 </li>
               ))}
             </ul>
