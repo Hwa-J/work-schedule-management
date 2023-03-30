@@ -1,5 +1,5 @@
 import { useEvents, useEventsActions } from 'store/useEventsStore';
-import { useModalsActions } from 'store/useModalStore';
+import { useAddModals, useModalsActions } from 'store/useModalStore';
 import {
   useAddEventValue,
   useAddEventValueActions,
@@ -11,13 +11,12 @@ import {
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import * as S from '../AddEventNomalModal/style';
 
-export const AddEventNomalModal = (props) => {
-  const { show, onHide } = props;
-
+export const AddEventNomalModal = () => {
   const addEventValue = useAddEventValue();
   const { setAddEventValue } = useAddEventValueActions();
   const events = useEvents();
   const { add } = useEventsActions();
+  const addEventNomalModal = useAddModals();
   const { showAddEventNomalModal } = useModalsActions();
   // console.log(addEventValue);
 
@@ -47,8 +46,8 @@ export const AddEventNomalModal = (props) => {
 
   return (
     <Modal
-      show={show}
-      onHide={onHide}
+      show={addEventNomalModal}
+      onHide={() => showAddEventNomalModal(false)}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
