@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { SearchListContainer } from './style';
 
-const SearchList = ({ onClick }) => {
+const SearchList = ({ onClick, users }) => {
   return (
     <SearchListContainer>
       <Form>
@@ -11,8 +11,11 @@ const SearchList = ({ onClick }) => {
           <Col sm={2}></Col>
           <Col sm={10}>
             <ul className="searchListWrapper">
-              <li onClick={() => onClick()}>검색결과1</li>
-              <li onClick={() => onClick()}>검색결과2</li>
+              {users.map((user) => (
+                <li key={user.id} onClick={() => onClick(user.email)}>
+                  {user.email}
+                </li>
+              ))}
             </ul>
           </Col>
         </Form.Group>

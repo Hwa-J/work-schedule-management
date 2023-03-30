@@ -31,3 +31,10 @@ export const useAuthStore = create(
     { name: 'access_token' },
   ),
 );
+
+export const useSearchStore = create((set) => ({
+  email: '',
+  setEmail: (email) => {
+    set((state) => ({ email: email }));
+  },
+}));

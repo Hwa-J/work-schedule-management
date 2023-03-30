@@ -4,8 +4,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FormLabel } from 'react-bootstrap';
 import SearchBar from 'components/SearchBar';
+import { useSearchStore } from 'store/store';
 
 const RoleManageForm = () => {
+  const { email } = useSearchStore();
+
   const handleUpdate = (e) => {
     e.preventDefault();
     alert('권한이 업데이트 되었습니다.');
@@ -29,7 +32,7 @@ const RoleManageForm = () => {
             email
           </FormLabel>
           <FormLabel column sm={10}>
-            아직 검색되지 않았습니다
+            {email === '' ? '아직 검색되지 않았습니다' : email}
           </FormLabel>
         </Form.Group>
 

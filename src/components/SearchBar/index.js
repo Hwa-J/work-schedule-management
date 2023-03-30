@@ -2,14 +2,18 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FormLabel } from 'react-bootstrap';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { SearchBarContainer } from './style';
 import SearchList from './SearchList';
+import axios from 'axios';
+import { useSearchStore } from 'store/store';
 
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
   const [opened, setOpened] = useState(false);
+  const [users, setUsers] = useState(null);
   const inputRef = useRef();
+  const setStoreEmail = useSearchStore((state) => state.setEmail);
 
   const handleChange = (e) => {
     setKeyword(e.target.value);
@@ -20,15 +24,23 @@ const SearchBar = () => {
     if (keyword === '') {
       alert('검색어를 입력해 주세요');
     } else {
-      console.log(`${keyword} 검색중`);
-      setOpened(true);
+      axios
+        .get('http://localhost:4000/users')
+        .then(function (res) {
+          setUsers(res.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
+    setOpened(true);
     inputRef.current.blur();
   };
 
-  const handleListClick = () => {
+  const handleListClick = (user) => {
     setOpened(false);
     setKeyword('');
+    setStoreEmail(user);
   };
 
   return (
@@ -49,7 +61,9 @@ const SearchBar = () => {
           </Col>
         </Form.Group>
       </Form>
-      {opened ? <SearchList onClick={handleListClick} /> : null}
+      {opened && users ? (
+        <SearchList onClick={handleListClick} users={users} />
+      ) : null}
     </SearchBarContainer>
   );
 };
