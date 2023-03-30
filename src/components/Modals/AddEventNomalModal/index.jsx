@@ -1,5 +1,5 @@
 import { useEvents, useEventsActions } from 'store/useEventsStore';
-import { useAddModals, useModalsActions } from 'store/useModalStore';
+import { useAddEventNomalModal, useModalsActions } from 'store/useModalStore';
 import {
   useAddEventValue,
   useAddEventValueActions,
@@ -16,7 +16,7 @@ export const AddEventNomalModal = () => {
   const { setAddEventValue } = useAddEventValueActions();
   const events = useEvents();
   const { add } = useEventsActions();
-  const addEventNomalModal = useAddModals();
+  const addEventNomalModal = useAddEventNomalModal();
   const { showAddEventNomalModal } = useModalsActions();
   // console.log(addEventValue);
 

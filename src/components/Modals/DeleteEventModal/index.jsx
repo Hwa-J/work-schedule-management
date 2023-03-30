@@ -1,4 +1,4 @@
-import { useDeleteModal, useModalsActions } from 'store/useModalStore';
+import { useDeleteEventModal, useModalsActions } from 'store/useModalStore';
 import { useDeleteEventValue } from 'store/useDeleteEventValueStore';
 import { useDeleteEventValueActions } from 'store/useDeleteEventValueStore';
 import { useEventsActions } from 'store/useEventsStore';
@@ -6,7 +6,7 @@ import { Button, Modal } from 'react-bootstrap';
 import * as S from './style';
 
 export const DeleteEventModal = () => {
-  const deleteEventModal = useDeleteModal();
+  const deleteEventModal = useDeleteEventModal();
   const { showDeleteEventModal } = useModalsActions();
   const { del } = useEventsActions();
   const deleteEventValue = useDeleteEventValue();

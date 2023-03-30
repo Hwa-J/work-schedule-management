@@ -16,9 +16,9 @@ const useModalsStore = create((set) => ({
   },
 }));
 
-export const useAddModals = () =>
+export const useAddEventNomalModal = () =>
   useModalsStore(({ addEventNomalModal }) => addEventNomalModal);
-export const useDeleteModal = () =>
+export const useDeleteEventModal = () =>
   useModalsStore(({ deleteEventModal }) => deleteEventModal);
 
 export const useModalsActions = () => useModalsStore((state) => state.actions);
