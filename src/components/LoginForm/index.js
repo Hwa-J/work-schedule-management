@@ -29,8 +29,8 @@ const LoginForm = () => {
       alert('ID와 비밀번호를 입력해 주세요');
     } else {
       axios
-        .post('http://localhost:4000/login', {
-          email: loginId,
+        .post('http://54.180.9.59:8080/api/login', {
+          username: loginId,
           password: loginPassword,
         })
         .then(function (res) {
@@ -41,7 +41,7 @@ const LoginForm = () => {
           // localStorage.setItem('access_token', res.data.accessToken);
 
           //전역 State에 토큰 저장하기
-          setStoreToken(res.data.accessToken);
+          setStoreToken(res.data.token.accessToken);
         })
         .catch(function (error) {
           console.log(error);
