@@ -3,6 +3,7 @@ import useCookies from 'react-cookie/cjs/useCookies';
 import Button from 'react-bootstrap/Button';
 import { useAuthStore } from 'store/store.js';
 import { Link } from 'react-router-dom';
+import { DeleteEventModal } from 'components/Modals/DeleteEventModal';
 
 const Main = () => {
   const [cookies, setCookies, removeCookies] = useCookies(['access_token']);
@@ -32,6 +33,7 @@ const Main = () => {
         <Button variant="outline-dark">마이페이지 이동하기</Button>
       </Link>
       <MainCalendar />
+      <DeleteEventModal />
     </div>
   );
 };
