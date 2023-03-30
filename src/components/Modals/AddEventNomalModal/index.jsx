@@ -39,8 +39,10 @@ export const AddEventNomalModal = (props) => {
         event_id: `${events.length + 1}`, // 테스트용 고정값
         isDraggable: true,
       });
+      await showAddEventNomalModal(false);
+    } else {
+      alert('일정 종류를 선택해 주세요.');
     }
-    await showAddEventNomalModal(false);
   };
 
   return (
