@@ -3,8 +3,12 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FormLabel } from 'react-bootstrap';
+import SearchBar from 'components/SearchBar';
+import { useSearchStore } from 'store/store';
 
 const RoleManageForm = () => {
+  const { name, email } = useSearchStore();
+
   const handleUpdate = (e) => {
     e.preventDefault();
     alert('권한이 업데이트 되었습니다.');
@@ -12,23 +16,14 @@ const RoleManageForm = () => {
 
   return (
     <>
-      <Form>
-        <Form.Group as={Row} className="mb-3" controlId="formSearch">
-          <FormLabel column sm={2}>
-            검색
-          </FormLabel>
-          <Col sm>
-            <Form.Control type="text" placeholder="검색할 이름을 입력하세요" />
-          </Col>
-        </Form.Group>
-      </Form>
+      <SearchBar />
       <Form>
         <Form.Group as={Row} className="mb-3" controlId="formName">
           <FormLabel column sm={2}>
             이름
           </FormLabel>
           <FormLabel column sm={10}>
-            아직 검색되지 않았습니다
+            {name === '' ? '아직 검색되지 않았습니다' : name}
           </FormLabel>
         </Form.Group>
 
@@ -37,7 +32,7 @@ const RoleManageForm = () => {
             email
           </FormLabel>
           <FormLabel column sm={10}>
-            아직 검색되지 않았습니다
+            {email === '' ? '아직 검색되지 않았습니다' : email}
           </FormLabel>
         </Form.Group>
 
