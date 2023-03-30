@@ -4,6 +4,10 @@ import {
   useEventsActions,
   useFilteredEvents,
 } from 'store/useEventsStore';
+import { useModalsActions } from 'store/useModalStore';
+import { useAddEventValueActions } from 'store/useAddEventValueStore';
+import { useDeleteEventValueActions } from 'store/useDeleteEventValueStore';
+import { getDateToSlashForm } from 'util/getDateToCustomForm';
 import { momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment-timezone';
@@ -29,7 +33,10 @@ const handleChange = () => {
 export const MainCalendar = () => {
   const events = useEvents();
   const filteredEvents = useFilteredEvents();
-  const { add, edit, del } = useEventsActions();
+  const { edit } = useEventsActions();
+  const { showAddEventNomalModal, showDeleteEventModal } = useModalsActions();
+  const { setAddEventValue, resetAddEventValue } = useAddEventValueActions();
+  const { setDeleteEventValue } = useDeleteEventValueActions();
 
   console.log(events);
   console.log(filteredEvents);
@@ -46,20 +53,16 @@ export const MainCalendar = () => {
   );
 
   // 달력에서 드래그로 일정 추가
-  const addEvent = ({ start, end }) => {
-    // todo: 모달창으로 category, name 입력값 받기
-    const name = window.prompt('New Event name');
-    if (name) {
-      add({
-        start,
-        end: new Date(end),
-        name,
-        category: '연차', // 테스트용 고정값
-        user_account_id: '001', // 테스트용 고정값
-        event_id: `${events.length + 1}`, // 테스트용 고정값
-        isDraggable: '001' === USER_ID, // 테스트용 고정값
-      });
-    }
+  const addEvent = async ({ start, end }) => {
+    // 이전 모달창에서 받은 입력값 초기화
+    await resetAddEventValue();
+    // 'YYYY/MM/DD' 날짜형식으로 변경
+    const formatStart = getDateToSlashForm(start);
+    const formatEnd = getDateToSlashForm(end);
+    // 일정 추가할 날짜값 store 저장
+    await setAddEventValue({ start: formatStart, end: formatEnd });
+    // 일정 추가 모달창 열기
+    await showAddEventNomalModal(true);
   };
 
   // 날짜 길이 조정, 옮기기로 일정 수정
@@ -69,14 +72,13 @@ export const MainCalendar = () => {
   };
 
   // 날짜 더블클릭 일정 삭제
-  const deleteEvent = (data) => {
+  const deleteEvent = async (data) => {
     // user_account_id가 일치하는 것만 삭제 가능
+    // todo: 관리자 계정은 모든 일정 삭제 가능하도록 수정
     if (data.user_account_id !== USER_ID) return;
-    // todo: 모달창으로 삭제 여부 묻기
-    const answer = window.confirm('정말 삭제하시겠습니까?');
-    if (answer) {
-      del(data);
-    }
+    await setDeleteEventValue(data);
+    // 일정 삭제 확인 모달창 열기
+    await showDeleteEventModal(true);
   };
 
   return (
@@ -95,7 +97,7 @@ export const MainCalendar = () => {
         resizable
         selectable
         popup
-        style={{ width: '90vw', height: '70vh' }}
+        style={{ width: 'auto', height: '80vh' }}
         views={''}
         onNavigate={handleNavigation}
         components={{
