@@ -12,8 +12,6 @@ import { useAuthStore } from 'store/store.js';
 import RequireAuth from 'RequireAuth';
 import { useEffect } from 'react';
 import { Layout } from 'components/Main/Layout';
-import { AddEventNomalModal } from 'components/Modals/AddEventNomalModal';
-import { useAddModals, useModalsActions } from 'store/useModalStore';
 
 function App() {
   // 쿠키에 토큰이 있을때
@@ -25,8 +23,6 @@ function App() {
 
   // 전역 state에 토큰이 있을때
   const { token } = useAuthStore();
-  const addEventNomalModal = useAddModals();
-  const { showAddEventNomalModal } = useModalsActions();
 
   useEffect(() => {
     if (!token) {
@@ -52,11 +48,6 @@ function App() {
         {/* </Route> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {/* 모달창 */}
-      <AddEventNomalModal
-        show={addEventNomalModal}
-        onHide={() => showAddEventNomalModal(false)}
-      />
     </BrowserRouter>
   );
 }
