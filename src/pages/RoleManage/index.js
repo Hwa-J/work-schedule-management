@@ -1,5 +1,15 @@
+import { FormContainer } from 'components/Common/FormContainer';
+import { RoleManageLayout } from './style';
+import RoleManageForm from 'components/RoleManageForm';
+
 const RoleManage = () => {
-  return <div>유저권한관리페이지</div>;
+  return (
+    <RoleManageLayout className="centerAlign">
+      <FormContainer width="600px">
+        <RoleManageForm />
+      </FormContainer>
+    </RoleManageLayout>
+  );
 };
 
 export default RoleManage;
