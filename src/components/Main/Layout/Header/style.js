@@ -17,7 +17,7 @@ export const RoleInfo = styled.div`
   margin-right: 10px;
   border-radius: 4px;
   font-weight: 600;
-  background-color: #ffafa1;
+  background-color: ${(props) => props.color};
   /* background-color: ${({ role }) =>
     role === '관리자' ? '#ffafa1' : '#e7e7e7'}; */
 `;
