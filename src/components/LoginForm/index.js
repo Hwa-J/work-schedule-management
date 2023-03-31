@@ -5,14 +5,19 @@ import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 import axios from 'axios';
 import useCookies from 'react-cookie/cjs/useCookies';
-import { useAuthStore } from 'store/store.js';
+import useAuthStore from 'store/useAuthStore';
+import useLoggedUserStore from 'store/useLoggedUserStore';
 
 const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [cookies, setCookies] = useCookies(['refresh_token']);
   const setStoreToken = useAuthStore((state) => state.setToken);
-  const setStoreRole = useAuthStore((state) => state.setRole);
+  const setId = useLoggedUserStore((state) => state.setId);
+  const setUsername = useLoggedUserStore((state) => state.setUsername);
+  const setName = useLoggedUserStore((state) => state.setName);
+  const setEmail = useLoggedUserStore((state) => state.setEmail);
+  const setRole = useLoggedUserStore((state) => state.setRole);
 
   const handleChangeIdValue = (e) => {
     setLoginId(e.target.value);
@@ -39,8 +44,12 @@ const LoginForm = () => {
           //전역 State에 access 토큰 저장하기
           setStoreToken(res.data.token.accessToken);
 
-          //전역 State에 role 저장하기
-          setStoreRole(res.data.role);
+          //전역 State에 유저정보 저장하기
+          setId(res.data.id);
+          setUsername(res.data.userName);
+          setName(res.data.name);
+          setEmail(res.data.email);
+          setRole(res.data.role);
         })
         .catch(function (error) {
           console.log(error);

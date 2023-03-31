@@ -1,8 +1,8 @@
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
-import { useAuthStore } from 'store/store.js';
+import useLoggedUserStore from 'store/useLoggedUserStore';
 
 const RequireRole = () => {
-  const { role } = useAuthStore();
+  const { role } = useLoggedUserStore();
   const location = useLocation();
 
   return role === 'ADMIN' ? (
