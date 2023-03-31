@@ -16,6 +16,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { ToolBarComponent } from './CalendarToolBar';
 import * as S from './style';
 import { USER_ID } from 'api/mockup';
+import { useQuery } from 'react-query';
+import { fetchEventsMockup } from 'api';
+import { useEditEvent } from 'util/hooks/useEditEvent';
 
 moment.tz.setDefault('Asia/Seoul');
 const localizer = momentLocalizer(moment);
@@ -31,15 +34,23 @@ const handleChange = () => {
 };
 
 export const MainCalendar = () => {
-  const events = useEvents();
-  const filteredEvents = useFilteredEvents();
-  const { edit } = useEventsActions();
+  // const events = useEvents();
+  // const filteredEvents = useFilteredEvents();
+  // const { get, edit } = useEventsActions();
   const { showAddEventNomalModal, showDeleteEventModal } = useModalsActions();
   const { setAddEventValue, resetAddEventValue } = useAddEventValueActions();
   const { setDeleteEventValue } = useDeleteEventValueActions();
+  // 일정 수정 서버 통신코드 가져오기
+  const edit = useEditEvent();
 
+  // 서버에서 일정 데이터 가져오기
+  const {
+    isLoading,
+    error,
+    data: events,
+  } = useQuery(['events'], fetchEventsMockup);
   console.log(events);
-  console.log(filteredEvents);
+
   const eventPropGetter = useCallback(
     (event) => ({
       ...(event.isDraggable
@@ -68,7 +79,9 @@ export const MainCalendar = () => {
   // 날짜 길이 조정, 옮기기로 일정 수정
   const editEvent = (data) => {
     // const { start, end, event } = data;
-    edit(data);
+    console.log(data);
+    // 수정하기 서버 통신 실행
+    edit.mutate(data);
   };
 
   // 날짜 더블클릭 일정 삭제
@@ -88,7 +101,8 @@ export const MainCalendar = () => {
         defaultView="month"
         draggableAccessor="isDraggable"
         eventPropGetter={eventPropGetter}
-        events={filteredEvents.length === 0 ? events : filteredEvents}
+        events={events}
+        // events={filteredEvents.length === 0 ? events : filteredEvents}
         localizer={localizer}
         onEventDrop={editEvent}
         onEventResize={editEvent}
