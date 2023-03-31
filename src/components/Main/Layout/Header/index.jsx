@@ -1,4 +1,5 @@
 import * as S from './style';
+import LogoutBtn from 'components/Common/LogoutBtn';
 
 export const Header = () => {
   return (
@@ -9,6 +10,7 @@ export const Header = () => {
       </span>
       {/* <S.RoleInfo>{userStore.role}</S.RoleInfo> */}
       {/* <span>안녕하세요! <S.Name>{userStore.name}</S.Name>님</span> */}
+      <LogoutBtn />
     </S.Header>
   );
 };
