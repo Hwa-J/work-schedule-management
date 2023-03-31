@@ -10,15 +10,17 @@ import {
 } from 'util/getDateToCustomForm';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import * as S from '../AddEventNomalModal/style';
+import { useAddEvent } from 'util/hooks/useAddEvent';
 
 export const AddEventNomalModal = () => {
   const addEventValue = useAddEventValue();
   const { setAddEventValue } = useAddEventValueActions();
   const events = useEvents();
-  const { add } = useEventsActions();
+  // const { add } = useEventsActions();
   const addEventNomalModal = useAddEventNomalModal();
   const { showAddEventNomalModal } = useModalsActions();
   // console.log(addEventValue);
+  const mutation = useAddEvent();
 
   const getRadioValue = (e) => {
     const value = e.target.id;
@@ -29,15 +31,25 @@ export const AddEventNomalModal = () => {
     if (addEventValue.category) {
       // todo: api 연결시 요청값은 addEventValue 보내기
       // todo: api 연결시 반환값을 add 액션 함수의 인수로 넣기
-      await add({
-        start: new Date(addEventValue.start),
-        end: new Date(addEventValue.end),
-        category: addEventValue.category,
+      console.log(addEventValue);
+      mutation.mutate({
+        ...addEventValue,
+        id: `11`,
         name: '가나다', // 테스트용 고정값
+        email: '001@gamil.com', // 테스트용 고정값
         user_account_id: '001', // 테스트용 고정값
         event_id: `${events.length + 1}`, // 테스트용 고정값
         isDraggable: true,
       });
+      // await add({
+      //   start: new Date(addEventValue.start),
+      //   end: new Date(addEventValue.end),
+      //   category: addEventValue.category,
+      //   name: '가나다', // 테스트용 고정값
+      //   user_account_id: '001', // 테스트용 고정값
+      //   event_id: `${events.length + 1}`, // 테스트용 고정값
+      //   isDraggable: true,
+      // });
       await showAddEventNomalModal(false);
     } else {
       alert('일정 종류를 선택해 주세요.');
