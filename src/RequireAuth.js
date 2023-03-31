@@ -1,5 +1,5 @@
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
-import { useAuthStore } from 'store/store.js';
+import useAuthStore from 'store/useAuthStore';
 
 const RequireAuth = () => {
   const { token } = useAuthStore();

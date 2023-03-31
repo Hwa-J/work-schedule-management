@@ -6,15 +6,16 @@ import { useRef, useState, useEffect } from 'react';
 import { SearchBarContainer } from './style';
 import SearchList from './SearchList';
 import axios from 'axios';
-import { useSearchStore, useAuthStore } from 'store/store';
+import useAuthStore from 'store/useAuthStore';
+import useSearchStore from 'store/useSearchStore';
 
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
   const [opened, setOpened] = useState(false);
   const [users, setUsers] = useState(null);
   const inputRef = useRef();
-  const setStoreName = useSearchStore((state) => state.setName);
-  const setStoreEmail = useSearchStore((state) => state.setEmail);
+  const setSearchName = useSearchStore((state) => state.setName);
+  const setSearchEmail = useSearchStore((state) => state.setEmail);
   const { token } = useAuthStore();
 
   const handleChange = (e) => {
@@ -46,8 +47,8 @@ const SearchBar = () => {
   const handleListClick = (name, email) => {
     setOpened(false);
     setKeyword('');
-    setStoreName(name);
-    setStoreEmail(email);
+    setSearchName(name);
+    setSearchEmail(email);
   };
 
   return (

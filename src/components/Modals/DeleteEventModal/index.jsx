@@ -1,22 +1,21 @@
 import { useDeleteEventModal, useModalsActions } from 'store/useModalStore';
 import { useDeleteEventValue } from 'store/useDeleteEventValueStore';
 import { useDeleteEventValueActions } from 'store/useDeleteEventValueStore';
-import { useEventsActions } from 'store/useEventsStore';
 import { Button, Modal } from 'react-bootstrap';
 import * as S from './style';
+import { useDeleteEvent } from 'util/hooks/useDeleteEvent';
 
 export const DeleteEventModal = () => {
   const deleteEventModal = useDeleteEventModal();
   const { showDeleteEventModal } = useModalsActions();
-  const { del } = useEventsActions();
   const deleteEventValue = useDeleteEventValue();
   const { resetDeleteEventValue } = useDeleteEventValueActions();
-  // console.log(deleteEventValue);
+  console.log(deleteEventValue);
+  const mutaion = useDeleteEvent();
 
   const handleDeleteEvent = async () => {
     // todo: api 연결시 요청값은 deleteEventValue에서 보내기
-    // todo: api 연결시 반환값을 true일 경우 del액션 함수 실행
-    await del(deleteEventValue);
+    mutaion.mutate(deleteEventValue.id);
     // 완료되면 모달 창 닫기
     await showDeleteEventModal(false);
     // 완료되면 deleteEventValue 값 초기화
