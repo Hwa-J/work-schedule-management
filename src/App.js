@@ -7,7 +7,7 @@ import Main from 'pages/Main';
 import MyInfo from 'pages/MyInfo';
 import RoleManage from 'pages/RoleManage';
 import NotFound from 'pages/NotFound';
-import { useAuthStore } from 'store/store.js';
+import useAuthStore from 'store/useAuthStore';
 import RequireAuth from 'RequireAuth';
 import RequireRole from 'ReruireRole';
 import { Layout } from 'components/Main/Layout';

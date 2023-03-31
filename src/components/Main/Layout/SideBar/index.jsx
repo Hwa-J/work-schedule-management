@@ -1,9 +1,9 @@
 import { OverlayTrigger, Popover, Button } from 'react-bootstrap';
 import * as S from './style';
-import { useAuthStore } from 'store/store';
+import useLoggedUserStore from 'store/useLoggedUserStore';
 
 export const SideBar = () => {
-  const { role } = useAuthStore();
+  const { role } = useLoggedUserStore();
   return (
     <S.SideBar>
       <div>
