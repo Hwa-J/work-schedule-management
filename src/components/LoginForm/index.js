@@ -29,7 +29,7 @@ const LoginForm = () => {
       alert('ID와 비밀번호를 입력해 주세요');
     } else {
       axios
-        .post('http://localhost:4000/login', {
+        .post('http://54.180.9.59:8080/login', {
           email: loginId,
           password: loginPassword,
         })

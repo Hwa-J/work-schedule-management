@@ -14,6 +14,26 @@
       "email": "user@naver.com",
       "password": "$2a$10$OoqbHSZ.b6Ni3DMiZ6UwkuYB5JLOkYinakzn08wNM8AZvugDV9ML6",
       "id": "user1"
+    },
+    {
+      "email": "user11@naver.com",
+      "password": "$2a$10$FGAxIM/0pTxWBgSuSUYge.V3ugKvdUIoovexZxiEkABZj4BLwnwsq",
+      "username": "user1",
+      "name": "홍길동",
+      "id": 3
+    },
+    {
+      "email": "user121@naver.com",
+      "password": "$2a$10$0fRUZWqG0PzxCsSVePFpHuG1lheeMZJiqgFj3sPyrhpROd0i/ZOBS",
+      "username": "user1",
+      "name": "홍길동",
+      "id": 4
+    },
+    {
+      "email": "456@naver.com",
+      "password": "$2a$10$bYUlkf2JMwfX6C9JMfvqZ.gMAbIfS7MgWCsxtn.b/1CK8Avvz.MFu",
+      "username": "123123a",
+      "id": 5
     }
   ],
   "events": [

@@ -1,16 +1,16 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 const useRegisterStore = create((set) => ({
-  id: '',
-  usename: '',
+  username: '',
+  name: '',
   email: '',
   password: '',
-  // confirmPwd: '',
-  setId: (id) => set({ id }),
-  setUsename: (usename) => set({ usename }),
+  confirmPwd: '',
+  setUsername: (username) => set({ username }),
+  setName: (name) => set({ name }),
   setEmail: (email) => set({ email }),
   setPassword: (password) => set({ password }),
-  // setConfirmPassword: (confirmPassword) => set({ confirmPassword }),
+  setConfirmPwd: (confirmPwd) => set({ confirmPwd }),
 }))
 
 export default useRegisterStore;
