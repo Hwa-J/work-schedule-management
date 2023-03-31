@@ -26,3 +26,11 @@ padding: 5px 0;
         margin-top: auto;
     }
 `
+export const Wthdr = styled.p`
+cursor: pointer;
+position: absolute;
+bottom: 30px;
+right: 30px;
+color: red;
+font-weight: bold;
+`

@@ -9,26 +9,24 @@ import useRegisterStore from "store/useRegisterStore";
 const SignUpForm = () => {
 
     //보관되어있는 zustand 데이터를 가지고옴
+    // id == username , username = 이름
     const {
-        id,
         username,
+        name,
         email,
         password,
         confirmPwd,
-        setId,
         setUsername,
+        setName,
         setEmail,
         setPassword,
         setConfirmPwd,
     } = useRegisterStore();
 
 
-    const [userIdError, setUserIdError] = useState(false);
+    const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [emailError, setEmailError] = useState(false);
-
-
-
     const [isCheckId, setIsCheckId] = useState(false); //id중복검사 state
 
 
@@ -45,17 +43,18 @@ const SignUpForm = () => {
         return;
     }
 
+
     const onChangeUserId = (e) => {
-        const userIdRegex = /^[A-Za-z0-9+]{5,}$/;
-        if ((!e.target.value || (userIdRegex.test(e.target.value)))) setUserIdError(false);
-        else setUserIdError(true);
-        setId(e.target.value);
-        console.log(userIdError);
+        const userIdRegex = /^[A-Za-z0-9+]{5,10}$/;
+        if ((!e.target.value || (userIdRegex.test(e.target.value)))) setUsernameError(false);
+        else setUsernameError(true);
+        setUsername(e.target.value);
+        console.log(setUsernameError);
     };
     //비밀번호 유효성 검사
     const checkPassword = (e) => {
         //  8 ~ 10자 영문, 숫자 조합
-        var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/
+        var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/
         // 형식에 맞는 경우 true 리턴
         if ((!e.target.value || (regExp.test(e.target.value)))) setPasswordError(false);
         else setPasswordError(true);
@@ -71,10 +70,10 @@ const SignUpForm = () => {
     }
 
     const validation = () => {
-        if (!id) setUserIdError(true);
-        if (!username) setPasswordError(true);
-        if (!password) setEmailError(true);
-        if (id && username && password) return true;
+        if (!username) setUsername(true);
+        if (!password) setPasswordError(true);
+        if (!email) setEmailError(true);
+        if (username && password && email) return true;
         else return false;
     }
 
@@ -82,15 +81,16 @@ const SignUpForm = () => {
         event.preventDefault();
         //비밀헌호가 일치할때 값을 넘기고 일치하지않으면 alert창이 뜨게
         if (password === confirmPwd && validation()) {
-            axios.post("/api/auth/signup",
+            axios.post("http://54.180.9.59:8080/api/users/signup",
                 {
                     username: username,
+                    name: name,
                     email: email,
                     password: password,
+                    confirmPwd: confirmPwd,
                 })
                 .then((response) => {
                     console.log(response);
-                    console.log("dfdfdf")
                 })
                 .catch((error) => {
                     console.log(error);
@@ -109,15 +109,15 @@ const SignUpForm = () => {
                     <Form.Group className='mb-3'>
                         <InputBox>
                             <Form.Label>
-                                ID
+                                Username(id)
                             </Form.Label>
                             <Form.Control
-                                type='id'
+                                type='username'
                                 placeholder="Id (5글자 이상)"
-                                value={id}
+                                value={username}
                                 onChange={onChangeUserId}
                             />
-                            {userIdError && <span>형식이 맞지 않습니다</span>}
+                            {usernameError && <span>형식이 맞지 않습니다</span>}
                             <Button onClick={handleCheckID}>id 중복확인</Button>
                         </InputBox>
                     </Form.Group>
@@ -127,10 +127,10 @@ const SignUpForm = () => {
                                 username
                             </Form.Label>
                             <Form.Control
-                                type='username'
-                                placeholder="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)} />
+                                type='name'
+                                placeholder="name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)} />
                         </InputBox>
                     </Form.Group>
                     <Form.Group className='mb-3'>
@@ -155,7 +155,6 @@ const SignUpForm = () => {
                             <Form.Control
                                 type='password'
                                 placeholder="password"
-                                // onBlur={checkPassword}
                                 value={password}
                                 onChange={checkPassword}
                             />
