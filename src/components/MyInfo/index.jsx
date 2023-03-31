@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import { InputBox, Wthdr } from 'components/SignUp/style';
 import { FormContainer } from 'components/Common/FormContainer'
+import { useAuthStore } from 'store/store';
 
 
 const MyInfoPage = () => {
@@ -15,17 +16,24 @@ const MyInfoPage = () => {
     const [confirmPwd, setConfirmPwd] = useState('');
 
     const [userInfo, setUserInfo] = useState(null);
+    const { token } = useAuthStore();
 
     useEffect(() => {
         //백엔드에서 받아오는회원정보
-        axios.get('http://54.180.9.59:8080/api/users')
+        axios.get('http://54.180.9.59:8080/api/users', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
             .then(response => {
                 setUserInfo(response.data);
+                console.log("asdasd")
             })
+            .then(data => setUserInfo(data))
             .catch(error => {
                 console.log(error);
             })
-    }, []);
+    }, [token]);
 
 
 
@@ -63,8 +71,15 @@ const MyInfoPage = () => {
                 <FormContainer style={{ width: 800, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                     <Form.Group>
                         <InputBox>
+                            {userInfo ? (
+                                <div>
+                                    {userInfo.username}
+                                </div>
+                            ) : (
+                                <div>ㅍㅍㅍㅍ</div>
+                            )}
                             <Form.Label>
-                                ID
+
                             </Form.Label>
                             <Form.Control
                                 type='id'

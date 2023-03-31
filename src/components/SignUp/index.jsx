@@ -5,6 +5,7 @@ import { RegisterStyle, InputBox } from "./style";
 import React, { useState } from "react";
 import axios from "axios";
 import useRegisterStore from "store/useRegisterStore";
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
 
@@ -24,24 +25,28 @@ const SignUpForm = () => {
     } = useRegisterStore();
 
 
+    const navi = useNavigate();
+    const loginNavi = () => {
+        navi('/')
+    }
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [emailError, setEmailError] = useState(false);
-    const [isCheckId, setIsCheckId] = useState(false); //id중복검사 state
+    // const [isCheckId, setIsCheckId] = useState(false); //id중복검사 state
 
 
-    const handleCheckID = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`api/auth/checkId?isCheckId=${isCheckId}`);
-            const data = await response.json();
-            setIsCheckId(data.isCheckId);
-        } catch (error) {
-            console.log(error);
-            console.log("중복");
-        }
-        return;
-    }
+    // const handleCheckID = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         const response = await fetch(`api/auth/checkId?isCheckId=${isCheckId}`);
+    //         const data = await response.json();
+    //         setIsCheckId(data.isCheckId);
+    //     } catch (error) {
+    //         console.log(error);
+    //         console.log("중복");
+    //     }
+    //     return;
+    // }
 
 
     const onChangeUserId = (e) => {
@@ -91,10 +96,13 @@ const SignUpForm = () => {
                 })
                 .then((response) => {
                     console.log(response);
+                    alert('회원가입에 성공하였습니다');
+                    loginNavi();
                 })
                 .catch((error) => {
                     console.log(error);
                     console.log("가입실패");
+                    alert('회원가입에 성공하였습니다');
                 })
             return;
         } else {
@@ -118,7 +126,7 @@ const SignUpForm = () => {
                                 onChange={onChangeUserId}
                             />
                             {usernameError && <span>형식이 맞지 않습니다</span>}
-                            <Button onClick={handleCheckID}>id 중복확인</Button>
+                            {/* <Button onClick={handleCheckID}>id 중복확인</Button> */}
                         </InputBox>
                     </Form.Group>
                     <Form.Group className='mb-3'>
