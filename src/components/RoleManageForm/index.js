@@ -5,19 +5,38 @@ import Col from 'react-bootstrap/Col';
 import { FormLabel } from 'react-bootstrap';
 import SearchBar from 'components/SearchBar';
 import useSearchStore from 'store/useSearchStore';
+import useAuthStore from 'store/useAuthStore';
 import { useState } from 'react';
+import axios from 'axios';
+import useUserUpdatedStore from 'store/useUserUpdatedStore';
 
 const RoleManageForm = () => {
-  const { name, email } = useSearchStore();
-  const [selected, setSelected] = useState(false);
+  const { id, name, email } = useSearchStore();
+  const [selectedRole, setSelectedRole] = useState('');
+  const setSearchId = useSearchStore((state) => state.setId);
   const setSearchName = useSearchStore((state) => state.setName);
   const setSearchEmail = useSearchStore((state) => state.setEmail);
+  const { token } = useAuthStore();
+  const setModified = useUserUpdatedStore((state) => state.setModified);
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    setSearchName('');
-    setSearchEmail('');
-    alert('권한이 업데이트 되었습니다.');
+    axios
+      .post(
+        `http://54.180.9.59:8080/api/users/${id}/update`,
+        {
+          role: selectedRole,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((res) => {
+        setModified(res.data.modified);
+      })
+      .then(setSearchId(null), setSearchName(''), setSearchEmail(''));
   };
 
   return (
@@ -59,7 +78,7 @@ const RoleManageForm = () => {
               name="formHorizontalRadios"
               id="formHorizontalRadios1"
               onClick={() => {
-                setSelected(true);
+                setSelectedRole('USER');
               }}
             />
           </Col>
@@ -72,13 +91,13 @@ const RoleManageForm = () => {
               name="formHorizontalRadios"
               id="formHorizontalRadios2"
               onClick={() => {
-                setSelected(true);
+                setSelectedRole('ADMIN');
               }}
             />
           </Col>
         </Form.Group>
         <div className="centerAlign">
-          {name && selected === true ? (
+          {name && selectedRole !== '' ? (
             <Button type="submit" onClick={handleUpdate}>
               업데이트
             </Button>

@@ -14,7 +14,7 @@ const SearchList = ({ onClick, users }) => {
               {users.map((user) => (
                 <li
                   key={user.id}
-                  onClick={() => onClick(user.name, user.email)}
+                  onClick={() => onClick(user.id, user.name, user.email)}
                 >
                   <span className="name">{user.name}</span>
                   <span className="email">{user.email}</span>
