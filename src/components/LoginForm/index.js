@@ -6,7 +6,6 @@ import { useState } from 'react';
 import axios from 'axios';
 import useCookies from 'react-cookie/cjs/useCookies';
 import { useAuthStore } from 'store/store.js';
-import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
@@ -29,8 +28,8 @@ const LoginForm = () => {
       alert('ID와 비밀번호를 입력해 주세요');
     } else {
       axios
-        .post('http://54.180.9.59:8080/login', {
-          email: loginId,
+        .post('http://54.180.9.59:8080/api/login', {
+          username: loginId,
           password: loginPassword,
         })
         .then(function (res) {
