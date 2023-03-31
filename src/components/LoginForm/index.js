@@ -11,9 +11,9 @@ import { useNavigate } from 'react-router-dom';
 const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [cookies, setCookies] = useCookies(['refresh_token']);
   const setStoreToken = useAuthStore((state) => state.setToken);
-
-  // const [cookies, setCookies] = useCookies(['access_token']);
+  const setStoreRole = useAuthStore((state) => state.setRole);
 
   const handleChangeIdValue = (e) => {
     setLoginId(e.target.value);
@@ -34,14 +34,14 @@ const LoginForm = () => {
           password: loginPassword,
         })
         .then(function (res) {
-          // 쿠키에 토큰 저장하기 (보통은 서버에서 넣어서 보내기 때문에 필요없음.  json서버 테스트를 위한 코드)
-          // setCookies('access_token', res.data.accessToken);
+          // 쿠키에 refresh 토큰 저장하기
+          setCookies('refresh_token', res.data.token.refreshToken);
 
-          // 로컬 스토리지에 토큰 저장하기
-          // localStorage.setItem('access_token', res.data.accessToken);
-
-          //전역 State에 토큰 저장하기
+          //전역 State에 access 토큰 저장하기
           setStoreToken(res.data.token.accessToken);
+
+          //전역 State에 role 저장하기
+          setStoreRole(res.data.role);
         })
         .catch(function (error) {
           console.log(error);

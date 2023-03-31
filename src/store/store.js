@@ -17,8 +17,12 @@ export const useAuthStore = create(
   persist(
     (set) => ({
       token: null,
+      role: null,
       setToken: (token) => {
         set((state) => ({ token: token }));
+      },
+      setRole: (role) => {
+        set((state) => ({ role: role }));
       },
     }),
     { name: 'access_token' },
