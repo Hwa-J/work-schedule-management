@@ -1,7 +1,9 @@
 import { OverlayTrigger, Popover, Button } from 'react-bootstrap';
 import * as S from './style';
+import { useAuthStore } from 'store/store';
 
 export const SideBar = () => {
+  const { role } = useAuthStore();
   return (
     <S.SideBar>
       <div>
@@ -9,8 +11,12 @@ export const SideBar = () => {
         <S.PageLink to="/mypage">MyPage</S.PageLink>
         <div>
           {/* todo: 관리자 role만 링크 버튼 보여주기 */}
-          <S.PageLink to="/role ">권한 관리</S.PageLink>
-          <S.PageLink to="/events-list">일정 리스트</S.PageLink>
+          {role === 'ADMIN' ? (
+            <>
+              <S.PageLink to="/role ">권한 관리</S.PageLink>
+              <S.PageLink to="/events-list">일정 리스트</S.PageLink>
+            </>
+          ) : null}
         </div>
       </div>
       <Manual />

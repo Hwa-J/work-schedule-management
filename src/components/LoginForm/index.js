@@ -13,6 +13,7 @@ const LoginForm = () => {
   const [loginPassword, setLoginPassword] = useState('');
   const [cookies, setCookies] = useCookies(['refresh_token']);
   const setStoreToken = useAuthStore((state) => state.setToken);
+  const setStoreRole = useAuthStore((state) => state.setRole);
 
   const handleChangeIdValue = (e) => {
     setLoginId(e.target.value);
@@ -38,6 +39,9 @@ const LoginForm = () => {
 
           //전역 State에 access 토큰 저장하기
           setStoreToken(res.data.token.accessToken);
+
+          //전역 State에 role 저장하기
+          setStoreRole(res.data.role);
         })
         .catch(function (error) {
           console.log(error);
