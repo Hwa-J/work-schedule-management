@@ -3,10 +3,10 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
+import axios from 'axios';
 import useCookies from 'react-cookie/cjs/useCookies';
 import useAuthStore from 'store/useAuthStore';
 import useLoggedUserStore from 'store/useLoggedUserStore';
-import { instance } from 'api';
 
 const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
@@ -32,12 +32,12 @@ const LoginForm = () => {
     if (loginId === '' || loginPassword === '') {
       alert('ID와 비밀번호를 입력해 주세요');
     } else {
-      instance
-        .post('/login', {
+      axios
+        .post('http://54.180.9.59:8080/api/login', {
           username: loginId,
           password: loginPassword,
         })
-        .then(function (res) {
+        .then((res) => {
           // 쿠키에 refresh 토큰 저장하기
           setCookies('refresh_token', res.data.token.refreshToken);
 
@@ -51,9 +51,12 @@ const LoginForm = () => {
           setEmail(res.data.email);
           setRole(res.data.role);
         })
-        .catch(function (error) {
-          console.log(error);
-          alert('ID와 비밀번호를 확인해 주세요.');
+        .catch((error) => {
+          if (error.response.data.errorCode === 6) {
+            alert('ID와 비밀번호를 확인해 주세요');
+          } else {
+            alert('오류로 인해 실패하였습니다.  다시 시도해 주세요.');
+          }
         });
     }
   };

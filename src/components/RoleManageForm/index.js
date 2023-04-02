@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col';
 import { FormLabel } from 'react-bootstrap';
 import SearchBar from 'components/SearchBar';
 import useSearchStore from 'store/useSearchStore';
-import useAuthStore from 'store/useAuthStore';
 import { useState } from 'react';
 import useUserUpdatedStore from 'store/useUserUpdatedStore';
 import { instance } from 'api';
@@ -16,19 +15,25 @@ const RoleManageForm = () => {
   const setSearchId = useSearchStore((state) => state.setId);
   const setSearchName = useSearchStore((state) => state.setName);
   const setSearchEmail = useSearchStore((state) => state.setEmail);
-  const { token } = useAuthStore();
   const setModified = useUserUpdatedStore((state) => state.setModified);
 
   const handleUpdate = (e) => {
     e.preventDefault();
     instance
-      .post(`/${id}/update`, {
+      .post(`http://54.180.9.59:8080/api/users/${id}/update`, {
         role: selectedRole,
       })
       .then((res) => {
         setModified(res.data.modified);
       })
-      .then(setSearchId(null), setSearchName(''), setSearchEmail(''));
+      .then(setSearchId(null), setSearchName(''), setSearchEmail(''))
+      .catch((error) => {
+        if (error.response.data.errorCode === 9) {
+          alert('회원 권한 수정에 실패했습니다.  다시 시도해 주세요.');
+        } else {
+          alert('오류로 인해 실패하였습니다.  다시 시도해 주세요.');
+        }
+      });
   };
 
   return (

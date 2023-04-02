@@ -28,11 +28,15 @@ const SearchBar = () => {
     } else {
       instance
         .get(`/users?name=${keyword}`)
-        .then(function (res) {
+        .then((res) => {
           setUsers(res.data.users);
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((error) => {
+          if (error.response.data.errorCode === 8) {
+            alert('회원 조회에 오류가 발생했습니다.  다시 시도해 주세요');
+          } else {
+            alert('오류로 인해 실패하였습니다.  다시 시도해 주세요.');
+          }
         });
     }
     setOpened(true);
