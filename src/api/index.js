@@ -1,15 +1,20 @@
 import axios from 'axios';
+import useAuthStore from 'store/useAuthStore';
 
-const localData = localStorage.getItem('access_token');
-const token = JSON.parse(localData).state.token;
-const instance = axios.create({
+//인스턴스 설정
+export const instance = axios.create({
   baseURL: 'http://54.180.9.59:8080/api',
 });
-instance.defaults.headers.common['Authorization'] = token
-  ? `Bearer ${token}`
-  : null;
 
-export default instance;
+// 모든 request의 header에 access token 넣어주기
+instance.interceptors.request.use(function (config) {
+  const tokenStorage = localStorage.getItem('access_token');
+  const accessToken = JSON.parse(tokenStorage).state.token;
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+  }
+  return config;
+});
 
 // 일정 데이터 가져오기(mockup)
 export const fetchEventsMockup = () =>
