@@ -6,6 +6,9 @@ export const DnDCalendar = withDragAndDrop(Calendar);
 
 // 이벤트 바 데이터 카테고리 값에 따른 배경 색상 지정
 export const MainCalendar = styled(DnDCalendar)`
+  width: auto;
+  height: calc(100vh - 50px);
+  padding-bottom: 50px;
   .rbc-month-view {
     border: none;
   }
@@ -37,14 +40,19 @@ export const MainCalendar = styled(DnDCalendar)`
   .rbc-date-cell {
     padding-top: 5px;
   }
-
-  // 당직 이벤트 색상
-  .rbc-event.red {
-    background-color: #f87688;
-  }
-  // 연차 이젠트 색상
-  .rbc-event.blue {
-    background-color: #6db2f4;
+  .rbc-event {
+    // 당직 이벤트 색상
+    &.red {
+      background-color: #f87688;
+    }
+    // 연차 이벤트 색상
+    &.blue {
+      background-color: #6db2f4;
+    }
+    // 수정,삭제 불가 이벤트 색상
+    &.nonDraggable {
+      filter: brightness(0.85);
+    }
   }
 `;
 
