@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getDateToSlashForm } from 'util/getDateToCustomForm';
+import { getEventsToCustomForm } from 'util/getEventsToCustomForm';
 
 // access 토큰 인증이 필요한 instance
 export const instance = axios.create({
@@ -133,9 +133,6 @@ export const setupInterceptor = (accessToken, refreshToken, setToken) => {
   );
 };
 
-export const USER_DATA = JSON.parse(localStorage.getItem('user_data'));
-const { id } = USER_DATA.state;
-
 // 일정 데이터 가져오기(mockup)
 export const fetchEventsMockup = () =>
   instance.get('http://localhost:4000/events').then(({ data }) => {
@@ -149,19 +146,12 @@ export const fetchEventsMockup = () =>
   });
 
 // 특정 달의 일정데이터 가져오기
-export const fetchMonthEvents = async (year, month) => {
+export const fetchMonthEvents = async (user, year, month) => {
   try {
     const { data } = await instance.get(
       `/schedules?year=${year}&month=${month}`,
     );
-    const res = await data.map((event) => ({
-      ...event,
-      id: event.createdBy,
-      event_id: event.eventId,
-      start: new Date(getDateToSlashForm(event.start)),
-      end: new Date(getDateToSlashForm(event.end)),
-      isDraggable: event.createdBy === id,
-    }));
+    const res = await data.map((event) => getEventsToCustomForm(event, user));
     return res;
   } catch (error) {
     const { data } = await error.response;
@@ -169,10 +159,18 @@ export const fetchMonthEvents = async (year, month) => {
   }
 };
 // 특정 유저의 특정 달의 일정데이터 가져오기
-export const fetchMonthUserEvents = (user_accountid, year, month) =>
-  instance.get(
-    `/schedules?userid=${user_accountid}&year=${year}&month=${month}`,
-  );
+export const fetchMonthUserEvents = async (user, year, month) => {
+  try {
+    const { data } = await instance.get(
+      `/schedules?userid=${user.id}&year=${year}&month=${month}`,
+    );
+    const res = await data.map((event) => getEventsToCustomForm(event, user));
+    return res;
+  } catch (error) {
+    const { data } = await error.response;
+    console.log(data);
+  }
+};
 
 // 일정 등록하기(mockup)
 export const addEventMockup = (data) =>
