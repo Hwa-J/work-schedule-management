@@ -10,9 +10,13 @@ a {
   text-decoration: none;
   color: inherit;
 }
+html {
+font-family: "Roboto","Arial",sans-serif;
+}
 .centerAlign {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 `;
 

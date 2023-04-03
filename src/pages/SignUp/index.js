@@ -1,5 +1,12 @@
-const SignUp = () => {
-  return <div>회원가입 페이지</div>;
-};
+import React from 'react'
+import SignUpForm from 'components/SignUp'
 
-export default SignUp;
+const SignUp = () => {
+  return (
+    <div>
+      <SignUpForm />
+    </div>
+  )
+}
+
+export default SignUp

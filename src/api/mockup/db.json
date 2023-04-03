@@ -1,0 +1,139 @@
+{
+  "users": [
+    {
+      "email": "test@mail.com",
+      "password": "$2a$10$Tmf4bMX.7AdjwN.sjbsA8.RglPdRN21vFuuuNvZuz0oV0OFUalsVO",
+      "id": 1
+    },
+    {
+      "email": "test2@mail.com",
+      "password": "$2a$10$3heJenk5A6EQL0BH/1Tli.AI.iXw8A58k4NgC6GpFgYfPFEhxpwO2",
+      "id": 2
+    },
+    {
+      "email": "user@naver.com",
+      "password": "$2a$10$OoqbHSZ.b6Ni3DMiZ6UwkuYB5JLOkYinakzn08wNM8AZvugDV9ML6",
+      "id": "user1"
+    },
+    {
+      "email": "user11@naver.com",
+      "password": "$2a$10$FGAxIM/0pTxWBgSuSUYge.V3ugKvdUIoovexZxiEkABZj4BLwnwsq",
+      "username": "user1",
+      "name": "홍길동",
+      "id": 3
+    },
+    {
+      "email": "user121@naver.com",
+      "password": "$2a$10$0fRUZWqG0PzxCsSVePFpHuG1lheeMZJiqgFj3sPyrhpROd0i/ZOBS",
+      "username": "user1",
+      "name": "홍길동",
+      "id": 4
+    },
+    {
+      "email": "456@naver.com",
+      "password": "$2a$10$bYUlkf2JMwfX6C9JMfvqZ.gMAbIfS7MgWCsxtn.b/1CK8Avvz.MFu",
+      "username": "123123a",
+      "id": 5
+    }
+  ],
+  "events": [
+    {
+      "id": "1",
+      "user_account_id": "001",
+      "category": "연차",
+      "start": "2023/03/16",
+      "end": "2023/03/18",
+      "created_by": "등록한 사람",
+      "created_at": "등록날짜",
+      "modified_by": "수정한 사람",
+      "modified_at": "수정날짜",
+      "name": "가",
+      "email": "001@gamil.com"
+    },
+    {
+      "id": "2",
+      "user_account_id": "001",
+      "category": "당직",
+      "start": "2023/03/23",
+      "end": "2023/03/24",
+      "created_by": "등록한 사람",
+      "created_at": "등록날짜",
+      "modified_by": "수정한 사람",
+      "modified_at": "수정날짜",
+      "name": "가",
+      "email": "001@gamil.com"
+    },
+    {
+      "id": "3",
+      "user_account_id": "002",
+      "category": "당직",
+      "start": "2023/03/11",
+      "end": "2023/03/12",
+      "created_by": "등록한 사람",
+      "created_at": "등록날짜",
+      "modified_by": "수정한 사람",
+      "modified_at": "수정날짜",
+      "name": "나",
+      "email": "002@gamil.com"
+    },
+    {
+      "id": "4",
+      "user_account_id": "003",
+      "category": "연차",
+      "start": "2023/03/22",
+      "end": "2023/03/25",
+      "created_by": "등록한 사람",
+      "created_at": "등록날짜",
+      "modified_by": "수정한 사람",
+      "modified_at": "수정날짜",
+      "name": "다",
+      "email": "003@gamil.com"
+    },
+    {
+      "id": "5",
+      "user_account_id": "002",
+      "category": "연차",
+      "start": "2023/03/29",
+      "end": "2023/04/01",
+      "created_by": "등록한 사람",
+      "created_at": "등록날짜",
+      "modified_by": "수정한 사람",
+      "modified_at": "수정날짜",
+      "name": "나",
+      "email": "002@gamil.com"
+    },
+    {
+      "id": "6",
+      "user_account_id": "004",
+      "category": "당직",
+      "start": "2023/03/22",
+      "end": "2023/03/23",
+      "created_by": "등록한 사람",
+      "created_at": "등록날짜",
+      "modified_by": "수정한 사람",
+      "modified_at": "수정날짜",
+      "name": "라",
+      "email": "004@gamil.com"
+    },
+    {
+      "start": "2023/03/08",
+      "end": "2023/03/10",
+      "category": "연차",
+      "id": "7",
+      "name": "가나다",
+      "email": "001@gamil.com",
+      "user_account_id": "001",
+      "isDraggable": true
+    },
+    {
+      "start": "2023/03/13",
+      "end": "2023/03/14",
+      "category": "당직",
+      "id": "8",
+      "name": "가나다",
+      "email": "001@gamil.com",
+      "user_account_id": "001",
+      "isDraggable": true
+    }
+  ]
+}
