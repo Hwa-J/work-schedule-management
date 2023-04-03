@@ -1,8 +1,12 @@
 import { fetchMonthEvents } from 'api';
 import { useQuery } from 'react-query';
+import useLoggedUserStore from 'store/useLoggedUserStore';
 
 export const useGetMonthEvents = (year, month) => {
-  return useQuery(['events', { year, month }], () =>
-    fetchMonthEvents(year, month),
+  const id = useLoggedUserStore(({ id }) => id);
+  const role = useLoggedUserStore(({ role }) => role);
+
+  return useQuery(['events', { id, role, year, month }], () =>
+    fetchMonthEvents({ id, role }, year, month),
   );
 };
