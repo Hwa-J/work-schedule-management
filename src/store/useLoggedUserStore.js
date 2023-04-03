@@ -20,7 +20,7 @@ const useLoggedUserStore = create(
         set((state) => ({ name: name }));
       },
       setEmail: (email) => {
-        set((state) => ({ role: email }));
+        set((state) => ({ email: email }));
       },
       setRole: (role) => {
         set((state) => ({ role: role }));

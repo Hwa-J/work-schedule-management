@@ -14,6 +14,7 @@ const SearchBar = () => {
   const [opened, setOpened] = useState(false);
   const [users, setUsers] = useState(null);
   const inputRef = useRef();
+  const setSearchId = useSearchStore((state) => state.setId);
   const setSearchName = useSearchStore((state) => state.setName);
   const setSearchEmail = useSearchStore((state) => state.setEmail);
   const { token } = useAuthStore();
@@ -44,9 +45,10 @@ const SearchBar = () => {
     inputRef.current.blur();
   };
 
-  const handleListClick = (name, email) => {
+  const handleListClick = (id, name, email) => {
     setOpened(false);
     setKeyword('');
+    setSearchId(id);
     setSearchName(name);
     setSearchEmail(email);
   };

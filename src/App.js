@@ -26,9 +26,9 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/main" element={<Main />} />
           <Route path="/mypage" element={<MyInfo />} />
-          <Route element={<RequireRole />}>
-            <Route path="/role" element={<RoleManage />} />
-          </Route>
+          {/* <Route element={<RequireRole />}> */}
+          <Route path="/role" element={<RoleManage />} />
+          {/* </Route> */}
         </Route>
         {/* </Route> */}
         <Route path="*" element={<NotFound />} />

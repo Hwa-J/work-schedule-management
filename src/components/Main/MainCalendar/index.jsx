@@ -1,13 +1,8 @@
 import { useCallback } from 'react';
-import {
-  useEvents,
-  useEventsActions,
-  useFilteredEvents,
-} from 'store/useEventsStore';
 import { useModalsActions } from 'store/useModalStore';
 import { useAddEventValueActions } from 'store/useAddEventValueStore';
 import { useDeleteEventValueActions } from 'store/useDeleteEventValueStore';
-import { getDateToSlashForm } from 'util/getDateToCustomForm';
+import { getDateToDashForm } from 'util/getDateToCustomForm';
 import { momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment-timezone';
@@ -15,10 +10,9 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { ToolBarComponent } from './CalendarToolBar';
 import * as S from './style';
-import { USER_ID } from 'api/mockup';
-import { useQuery } from 'react-query';
-import { fetchEventsMockup } from 'api';
 import { useEditEvent } from 'util/hooks/useEditEvent';
+import { useGetMonthEvents } from 'util/hooks/useGetMonthEvents';
+import { USER_DATA } from 'api';
 
 moment.tz.setDefault('Asia/Seoul');
 const localizer = momentLocalizer(moment);
@@ -33,10 +27,9 @@ const handleChange = () => {
   console.log('this block code executed');
 };
 
+const { id } = USER_DATA.state;
+
 export const MainCalendar = () => {
-  // const events = useEvents();
-  // const filteredEvents = useFilteredEvents();
-  // const { get, edit } = useEventsActions();
   const { showAddEventNomalModal, showDeleteEventModal } = useModalsActions();
   const { setAddEventValue, resetAddEventValue } = useAddEventValueActions();
   const { setDeleteEventValue } = useDeleteEventValueActions();
@@ -48,15 +41,15 @@ export const MainCalendar = () => {
     isLoading,
     error,
     data: events,
-  } = useQuery(['events'], fetchEventsMockup);
-  console.log(events);
+  } = useGetMonthEvents(moment().year(), moment().month() + 1);
+  // console.log(events);
 
   const eventPropGetter = useCallback(
     (event) => ({
       ...(event.isDraggable
         ? { className: 'isDraggable' }
         : { className: 'nonDraggable' }),
-      ...(event.category === '당직'
+      ...(event.category === 'DUTY'
         ? { className: 'red' }
         : { className: 'blue' }),
     }),
@@ -67,9 +60,9 @@ export const MainCalendar = () => {
   const addEvent = async ({ start, end }) => {
     // 이전 모달창에서 받은 입력값 초기화
     await resetAddEventValue();
-    // 'YYYY/MM/DD' 날짜형식으로 변경
-    const formatStart = getDateToSlashForm(start);
-    const formatEnd = getDateToSlashForm(end);
+    // 'YYYY-MM-DD' 날짜형식으로 변경
+    const formatStart = getDateToDashForm(start);
+    const formatEnd = getDateToDashForm(end);
     // 일정 추가할 날짜값 store 저장
     await setAddEventValue({ start: formatStart, end: formatEnd });
     // 일정 추가 모달창 열기
@@ -78,8 +71,6 @@ export const MainCalendar = () => {
 
   // 날짜 길이 조정, 옮기기로 일정 수정
   const editEvent = (data) => {
-    // const { start, end, event } = data;
-    console.log(data);
     // 수정하기 서버 통신 실행
     edit.mutate(data);
   };
@@ -88,7 +79,7 @@ export const MainCalendar = () => {
   const deleteEvent = async (data) => {
     // user_account_id가 일치하는 것만 삭제 가능
     // todo: 관리자 계정은 모든 일정 삭제 가능하도록 수정
-    if (data.user_account_id !== USER_ID) return;
+    if (data.id !== id) return;
     await setDeleteEventValue(data);
     // 일정 삭제 확인 모달창 열기
     await showDeleteEventModal(true);
