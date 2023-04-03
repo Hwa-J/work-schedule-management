@@ -5,6 +5,7 @@ import { RegisterStyle, InputBox } from "./style";
 import React, { useState } from "react";
 import axios from "axios";
 import useRegisterStore from "store/useRegisterStore";
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
 
@@ -24,37 +25,33 @@ const SignUpForm = () => {
     } = useRegisterStore();
 
 
+    const navi = useNavigate();
+    const loginNavi = () => {
+        navi('/')
+    }
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [emailError, setEmailError] = useState(false);
-    const [isCheckId, setIsCheckId] = useState(false); //id중복검사 state
-
-
-    const handleCheckID = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`api/auth/checkId?isCheckId=${isCheckId}`);
-            const data = await response.json();
-            setIsCheckId(data.isCheckId);
-        } catch (error) {
-            console.log(error);
-            console.log("중복");
-        }
-        return;
-    }
-
+    const [nameError, setNameError] = useState(false);
 
     const onChangeUserId = (e) => {
-        const userIdRegex = /^[A-Za-z0-9+]{5,10}$/;
+        const userIdRegex = /^[a-z0-9]{5,10}$/;
         if ((!e.target.value || (userIdRegex.test(e.target.value)))) setUsernameError(false);
         else setUsernameError(true);
         setUsername(e.target.value);
         console.log(setUsernameError);
     };
+    const onChangeName = (e) => {
+        //이름은 2~5글자 한글로 입력
+        const nameRegex = /^[가-힣]{2,5}$/;
+        if ((!e.target.value || (nameRegex.test(e.target.value)))) setNameError(false);
+        else setNameError(true);
+        setName(e.target.value);
+    }
     //비밀번호 유효성 검사
     const checkPassword = (e) => {
-        //  8 ~ 10자 영문, 숫자 조합
-        var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/
+        //  8 ~ 16자 영문, 숫자,특수문자 조합
+        var regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/
         // 형식에 맞는 경우 true 리턴
         if ((!e.target.value || (regExp.test(e.target.value)))) setPasswordError(false);
         else setPasswordError(true);
@@ -91,10 +88,13 @@ const SignUpForm = () => {
                 })
                 .then((response) => {
                     console.log(response);
+                    alert('회원가입에 성공하였습니다');
+                    loginNavi();
                 })
                 .catch((error) => {
                     console.log(error);
                     console.log("가입실패");
+                    alert('회원가입에 성공하였습니다');
                 })
             return;
         } else {
@@ -118,7 +118,7 @@ const SignUpForm = () => {
                                 onChange={onChangeUserId}
                             />
                             {usernameError && <span>형식이 맞지 않습니다</span>}
-                            <Button onClick={handleCheckID}>id 중복확인</Button>
+                            {/* <Button onClick={handleCheckID}>id 중복확인</Button> */}
                         </InputBox>
                     </Form.Group>
                     <Form.Group className='mb-3'>
@@ -130,7 +130,8 @@ const SignUpForm = () => {
                                 type='name'
                                 placeholder="name"
                                 value={name}
-                                onChange={(e) => setName(e.target.value)} />
+                                onChange={onChangeName} />
+                            {nameError && <span>이름 형식이 맞지 않습니다.</span>}
                         </InputBox>
                     </Form.Group>
                     <Form.Group className='mb-3'>
