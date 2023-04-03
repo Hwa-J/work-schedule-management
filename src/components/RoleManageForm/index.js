@@ -28,11 +28,7 @@ const RoleManageForm = () => {
       })
       .then(setSearchId(null), setSearchName(''), setSearchEmail(''))
       .catch((error) => {
-        if (error.response.data.errorCode === 9) {
-          alert('회원 권한 수정에 실패했습니다.  다시 시도해 주세요.');
-        } else {
-          alert('오류로 인해 실패하였습니다.  다시 시도해 주세요.');
-        }
+        console.log(error);
       });
   };
 

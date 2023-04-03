@@ -11,9 +11,17 @@ import useAuthStore from 'store/useAuthStore';
 import RequireAuth from 'RequireAuth';
 import RequireRole from 'ReruireRole';
 import { Layout } from 'components/Main/Layout';
+import { setupInterceptor } from 'api';
+import { useCookies } from 'react-cookie';
 
 function App() {
   const { token } = useAuthStore();
+  const setToken = useAuthStore((state) => state.setToken);
+
+  const [cookies] = useCookies(['refresh_token']);
+  const refreshToken = cookies.refresh_token;
+
+  setupInterceptor(token, refreshToken, setToken);
 
   return (
     <BrowserRouter>

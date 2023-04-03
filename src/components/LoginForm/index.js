@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 import axios from 'axios';
-import useCookies from 'react-cookie/cjs/useCookies';
+import { useCookies } from 'react-cookie';
 import useAuthStore from 'store/useAuthStore';
 import useLoggedUserStore from 'store/useLoggedUserStore';
 
@@ -52,11 +52,7 @@ const LoginForm = () => {
           setRole(res.data.role);
         })
         .catch((error) => {
-          if (error.response.data.errorCode === 6) {
-            alert('ID와 비밀번호를 확인해 주세요');
-          } else {
-            alert('오류로 인해 실패하였습니다.  다시 시도해 주세요.');
-          }
+          console.log(error);
         });
     }
   };
