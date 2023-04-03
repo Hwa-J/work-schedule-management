@@ -111,6 +111,7 @@ export const setupInterceptor = (accessToken, refreshToken, setToken) => {
             })
             .catch((err) => {
               // 여기서도 에러 잡히면 강제 로그아웃 처리
+              alert('로그인이 만료되었습니다.');
               return {
                 newAccessToken: null,
               };
