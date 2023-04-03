@@ -111,9 +111,9 @@ export const setupInterceptor = (accessToken, refreshToken, setToken) => {
             })
             .catch((err) => {
               // 여기서도 에러 잡히면 강제 로그아웃 처리
-              // return {
-              //   newAccessToken: null
-              // }
+              return {
+                newAccessToken: null,
+              };
             });
 
           // 새로 받은 토큰 store에 저장

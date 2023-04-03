@@ -13,6 +13,7 @@ import RequireRole from 'ReruireRole';
 import { Layout } from 'components/Main/Layout';
 import { setupInterceptor } from 'api';
 import { useCookies } from 'react-cookie';
+import { useEffect } from 'react';
 
 function App() {
   const { token } = useAuthStore();
@@ -21,7 +22,9 @@ function App() {
   const [cookies] = useCookies(['refresh_token']);
   const refreshToken = cookies.refresh_token;
 
-  setupInterceptor(token, refreshToken, setToken);
+  useEffect(() => {
+    setupInterceptor(token, refreshToken, setToken);
+  }, [token, refreshToken, setToken]);
 
   return (
     <BrowserRouter>

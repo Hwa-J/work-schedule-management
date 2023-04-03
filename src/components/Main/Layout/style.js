@@ -7,6 +7,7 @@ export const ColRemovePadding = styled(Col)`
 `;
 // Outlet Container 스타일
 export const RowFilledToMaxHeight = styled(Row)`
+  padding: 0 120px;
   height: calc(100vh - 50px);
   position: relative;
 `;
