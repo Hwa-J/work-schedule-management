@@ -49,9 +49,12 @@ export const MainCalendar = styled(DnDCalendar)`
     &.blue {
       background-color: #6db2f4;
     }
-    // 수정,삭제 불가 이벤트 색상
+    // 수정,삭제기능 활성화/비활성화 스타일
+    &.isDraggable {
+      filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4));
+    }
     &.nonDraggable {
-      filter: brightness(0.85);
+      filter: brightness(0.9);
     }
   }
 `;

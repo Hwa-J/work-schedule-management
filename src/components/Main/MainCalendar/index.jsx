@@ -12,19 +12,14 @@ import { ToolBarComponent } from './CalendarToolBar';
 import * as S from './style';
 import { useEditEvent } from 'util/hooks/useEditEvent';
 import { useGetMonthEvents } from 'util/hooks/useGetMonthEvents';
+import {
+  useMonth,
+  useYear,
+  useYearMonthActions,
+} from 'store/useYearMonthStore';
 
 moment.tz.setDefault('Asia/Seoul');
 const localizer = momentLocalizer(moment);
-
-// todo: 네비게이션 클릭시 실행될 이벤트
-const handleNavigation = (date, view, action) => {
-  console.log(date, view, action);
-  //it returns current date, view options[month,day,week,agenda] and action like prev, next or today
-};
-// todo: 이벤트 바 클릭시 실행될 이벤트
-const handleChange = () => {
-  console.log('this block code executed');
-};
 
 export const MainCalendar = () => {
   const { showAddEventNomalModal, showDeleteEventModal } = useModalsActions();
@@ -32,14 +27,19 @@ export const MainCalendar = () => {
   const { setDeleteEventValue } = useDeleteEventValueActions();
   // 일정 수정 서버 통신코드 가져오기
   const edit = useEditEvent();
+  // 현재 캘린더의 날짜 정보 가져오기
+  const year = useYear();
+  const month = useMonth();
+  const { getDate } = useYearMonthActions();
 
   // 서버에서 일정 데이터 가져오기
-  const {
-    isLoading,
-    error,
-    data: events,
-  } = useGetMonthEvents(moment().year(), moment().month() + 1);
+  const { isLoading, error, data: events } = useGetMonthEvents(year, month);
   console.log(events);
+
+  const handleNavigation = (date) => {
+    // 네비게이션 클릭시 YearMonthStore 날짜 변경
+    getDate(date);
+  };
 
   const eventPropGetter = useCallback(
     (event) => ({
@@ -97,7 +97,7 @@ export const MainCalendar = () => {
         views=""
         onNavigate={handleNavigation}
         components={{
-          event: EventComponent({ handleChange }),
+          event: EventComponent,
           toolbar: ToolBarComponent,
         }}
       />
@@ -105,15 +105,12 @@ export const MainCalendar = () => {
   );
 };
 
-// design html for event tile
 // 이벤트 바 커스텀
-const EventComponent =
-  ({ handleChange }) =>
-  (props) => {
-    const { event } = props;
-    return (
-      <S.EventBar title={event.email}>
-        <h5 onClick={handleChange}>{event.name}</h5>
-      </S.EventBar>
-    );
-  };
+const EventComponent = (props) => {
+  const { event } = props;
+  return (
+    <S.EventBar title={event.email}>
+      <h5>{event.name}</h5>
+    </S.EventBar>
+  );
+};

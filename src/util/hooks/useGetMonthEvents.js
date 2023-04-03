@@ -6,7 +6,7 @@ export const useGetMonthEvents = (year, month) => {
   const id = useLoggedUserStore(({ id }) => id);
   const role = useLoggedUserStore(({ role }) => role);
 
-  return useQuery(['events', { id, role, year, month }], () =>
+  return useQuery(['events', { year, month }], () =>
     fetchMonthEvents({ id, role }, year, month),
   );
 };
