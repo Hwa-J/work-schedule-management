@@ -4,88 +4,172 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import { InputBox, Wthdr } from 'components/SignUp/style';
 import { FormContainer } from 'components/Common/FormContainer'
+import useAuthStore from 'store/useAuthStore';
+import useLoggedUserStore from 'store/useLoggedUserStore';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const MyInfoPage = () => {
 
     const [username, setUsername] = useState('');
-    const [id, setId] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPwd, setConfirmPwd] = useState('');
+    const [usernameError, setUsernameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [nameError, setNameError] = useState(false);
+    const { token } = useAuthStore(); //token가져옴
+    const user = useLoggedUserStore(); //로그인 유저정보를 user로 담음
 
-    const [userInfo, setUserInfo] = useState(null);
+    const onChangeUserId = (e) => {
+        const userIdRegex = /^[a-z0-9]{5,10}$/;
+        if ((!e.target.value || (userIdRegex.test(e.target.value)))) setUsernameError(false);
+        else setUsernameError(true);
+        setUsername(e.target.value);
+    };
+    const onChangeName = (e) => {
+        //이름은 2~5글자 한글로 입력
+        const nameRegex = /^[가-힣]{2,5}$/;
+        if ((!e.target.value || (nameRegex.test(e.target.value)))) setNameError(false);
+        else setNameError(true);
+        setName(e.target.value);
+    }
+    //비밀번호 유효성 검사
+    const checkPassword = (e) => {
+        //  8 ~ 16자 영문, 숫자,특수문자 조합
+        var regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/
+        // 형식에 맞는 경우 true 리턴
+        if ((!e.target.value || (regExp.test(e.target.value)))) setPasswordError(false);
+        else setPasswordError(true);
+        setPassword(e.target.value);
+    }
+    // 이메일 유효성 검사
+    const checkEmail = (e) => {
+        var regExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+        // 형식에 맞는 경우 true 리턴
+        if ((!e.target.value || (regExp.test(e.target.value)))) setEmailError(false)
+        else setEmailError(true);
+        setEmail(e.target.value);
+    }
+
+    const validation = () => {
+        if (!username) setUsername(true);
+        if (!password) setPasswordError(true);
+        if (!email) setEmailError(true);
+        if (username && password && email) return true;
+        else return false;
+    }
+
+
+    const navi = useNavigate();
+    const loginNavi = () => {
+        navi('/')
+    }
+
 
     useEffect(() => {
-        //백엔드에서 받아오는회원정보
-        axios.get('http://54.180.9.59:8080/api/users')
+        //백엔드에서 받아오는회원정보O
+        if (!token || !user) { //쓸데없는 api호출막는거
+            return;
+        }
+        axios.get(`http://54.180.9.59:8080/api/users/${user.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        })
             .then(response => {
-                setUserInfo(response.data);
+                setName(response.data.user.name);
+                setUsername(response.data.user.username);
+                setEmail(response.data.user.email);
             })
             .catch(error => {
                 console.log(error);
             })
-    }, []);
-
+    }, [token, user]);
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put('http://54.180.9.59:8080/api/users/update', userInfo)
-            .then(response => {
-                //수정된 회원정보
-                console.log(response.data);
-                setUserInfo(response.data);
+        if (password === confirmPwd && validation()) {
+            //id제외 수정하고싶은데이터 입력후 post주소로
+            axios.post(`http://54.180.9.59:8080/api/users/${user.id}/update`, {
+                name: name,
+                email: email,
+                password: password,
+                confirmPwd: confirmPwd,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
             })
-            .catch(error => {
-                console.log(error);
-            })
+                .then(response => {
+                    //수정된 회원정보
+                    alert("수정 완료!");
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        } else {
+            alert("비밀번호가 일치하지 않습니다")
+        }
     }
+
 
     const handleWithdrawal = (e) => {
         e.preventDefault();
-        axios.delete('/api/user')
-            .then(response => {
-                console.log(response.data);
+        const confirmed = window.confirm(`${user.name}의 탈퇴를 진행하시겠습니까?`);
+        if (confirmed) {
+            axios.post(`http://54.180.9.59:8080/api/users/${user.id}/delete`, { user }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
             })
-            .catch(error => {
-                console.log(error);
-            })
+                .then(response => {
+                    loginNavi();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
     }
 
-    // if (!userInfo) {
-    //     return <div>로딩중</div>
-    // }
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>MyInfoPage
+            <div>
                 <FormContainer style={{ width: 800, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-                    <Form.Group>
+                    <Form.Group className='mb-3'>
                         <InputBox>
                             <Form.Label>
                                 ID
                             </Form.Label>
                             <Form.Control
-                                type='id'
-                                value={id}
-                                onChange={(e) => setId(e.target.value)}
+                                type='username'
+                                value={username}
+                                onChange={onChangeUserId}
+                                disabled
                             />
+                            {usernameError && <span>형식이 맞지 않습니다</span>}
                         </InputBox>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className='mb-3'>
                         <InputBox>
                             <Form.Label>
                                 이름
                             </Form.Label>
                             <Form.Control
                                 type='name'
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={name}
+                                onChange={onChangeName}
                             />
+                            {nameError && <span>이름 형식이 맞지 않습니다.</span>}
                         </InputBox>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className='mb-3'>
                         <InputBox>
                             <Form.Label>
                                 E-mail
@@ -93,11 +177,12 @@ const MyInfoPage = () => {
                             <Form.Control
                                 type='email'
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={checkEmail}
                             />
+                            {emailError && <span>이메일 형식이 맞지 않습니다</span>}
                         </InputBox>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className='mb-3'>
                         <InputBox>
                             <Form.Label>
                                 Password
@@ -105,11 +190,12 @@ const MyInfoPage = () => {
                             <Form.Control
                                 type='password'
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={checkPassword}
                             />
+                            {passwordError && <span>비밀번호 형식이 맞지 않습니다</span>}
                         </InputBox>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className='mb-3'>
                         <InputBox>
                             <Form.Label>
                                 ConfirmPwd
@@ -121,7 +207,10 @@ const MyInfoPage = () => {
                             />
                         </InputBox>
                     </Form.Group>
-                    <Button type="submit">회원정보 수정</Button>
+                    <Button
+                        style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', bottom: '20px' }}
+                        type="submit"
+                    >회원정보 수정</Button>
                     <Wthdr onClick={handleWithdrawal}>회원 탈퇴</Wthdr>
                 </FormContainer>
             </div>
