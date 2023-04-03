@@ -11,11 +11,10 @@ export const DeleteEventModal = () => {
   const deleteEventValue = useDeleteEventValue();
   const { resetDeleteEventValue } = useDeleteEventValueActions();
   console.log(deleteEventValue);
-  const mutaion = useDeleteEvent();
+  const del = useDeleteEvent();
 
   const handleDeleteEvent = async () => {
-    // todo: api 연결시 요청값은 deleteEventValue에서 보내기
-    mutaion.mutate(deleteEventValue.id);
+    del.mutate(deleteEventValue);
     // 완료되면 모달 창 닫기
     await showDeleteEventModal(false);
     // 완료되면 deleteEventValue 값 초기화

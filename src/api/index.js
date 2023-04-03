@@ -1,6 +1,7 @@
 import axios from 'axios';
 import useAuthStore from 'store/useAuthStore';
 import { useCookies } from 'react-cookie';
+import { getDateToSlashForm } from 'util/getDateToCustomForm';
 
 // access 토큰 인증이 필요한 instance
 export const instance = axios.create({
@@ -8,14 +9,20 @@ export const instance = axios.create({
 });
 
 // // instance의 request header에 access token 넣어주기
-instance.interceptors.request.use(async (config) => {
-  const getToken = localStorage.getItem('access_token');
-  const accessToken = JSON.parse(getToken).state.token;
+instance.interceptors.request.use(
+  async (config) => {
+    const getToken = localStorage.getItem('access_token');
+    const accessToken = JSON.parse(getToken).state.token;
 
-  config.headers['Authorization'] = `Bearer ${accessToken}`;
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-  return config;
-});
+    return config;
+  },
+  (error) => {
+    console.log(error);
+    return Promise.reject(error);
+  },
+);
 
 // 모든 responese에서 토큰 만료시 재발급 해주기 => 실패
 // instance.interceptors.response.use(
@@ -124,6 +131,9 @@ export const setupInterceptor = (accessToken, refreshToken, setToken) => {
   );
 };
 
+export const USER_DATA = JSON.parse(localStorage.getItem('user_data'));
+const { id } = USER_DATA.state;
+
 // 일정 데이터 가져오기(mockup)
 export const fetchEventsMockup = () =>
   instance.get('http://localhost:4000/events').then(({ data }) => {
@@ -137,8 +147,25 @@ export const fetchEventsMockup = () =>
   });
 
 // 특정 달의 일정데이터 가져오기
-export const fetchMonthEvents = (year, month) =>
-  instance.get(`/schedules?year=${year}&month=${month}`);
+export const fetchMonthEvents = async (year, month) => {
+  try {
+    const { data } = await instance.get(
+      `/schedules?year=${year}&month=${month}`,
+    );
+    const res = await data.map((event) => ({
+      ...event,
+      id: event.createdBy,
+      event_id: event.eventId,
+      start: new Date(getDateToSlashForm(event.start)),
+      end: new Date(getDateToSlashForm(event.end)),
+      isDraggable: event.createdBy === id,
+    }));
+    return res;
+  } catch (error) {
+    const { data } = await error.response;
+    console.log(data);
+  }
+};
 // 특정 유저의 특정 달의 일정데이터 가져오기
 export const fetchMonthUserEvents = (user_accountid, year, month) =>
   instance.get(
@@ -150,15 +177,19 @@ export const addEventMockup = (data) =>
   instance.post('http://localhost:4000/events', { ...data });
 
 // 일정 등록하기
-export const addEvent = (user_account_id, data) =>
-  instance.post(`/schedules/${user_account_id}/create`, {
-    user_account_id,
-    category: data.category,
-    start: data.start,
-    end: data.end,
-    name: data.name, // 실제 api 입력값 확인
-    email: data.email, // 실제 api 입력값 확인
-  });
+export const addEvent = async (user_account_id, data) => {
+  try {
+    await instance.post(`/schedules/${user_account_id}/create`, {
+      id: user_account_id,
+      category: data.category,
+      start: data.start,
+      end: data.end,
+    });
+  } catch (error) {
+    const { data } = (await error.response) ?? error;
+    console.log(data);
+  }
+};
 
 // 일정 수정하기(mockup)
 export const editEventMockup = (id, data) =>
@@ -170,22 +201,32 @@ export const editEventMockup = (id, data) =>
   });
 
 // // 일정 수정하기
-export const editEvent = (user_account_id, data) =>
-  instance.post(`/schedules/${user_account_id}/update`, {
-    event_id: data.event_id,
-    category: data.category,
-    start: data.start,
-    end: data.end,
-    name: data.name, // 실제 api 입력값 확인
-    email: data.email, // 실제 api 입력값 확인
-  });
+export const editEvent = async (user_account_id, data) => {
+  try {
+    await instance.post(`/schedules/${user_account_id}/update`, {
+      event_id: data.eventId,
+      category: data.category,
+      start: data.start,
+      end: data.end,
+    });
+  } catch (error) {
+    const { data } = (await error.response) ?? error;
+    console.log(data);
+  }
+};
 
 // 일정 삭제하기(mockup)
 export const deleteEventMockup = (id) =>
   instance.delete(`http://localhost:4000/events/${id}`);
 
 // 일정 삭제하기
-export const deleteEvent = (user_account_id, data) =>
-  instance.post(`schedule/${user_account_id}/delete`, {
-    event_id: data.event_id,
-  });
+export const deleteEvent = async (user_account_id, data) => {
+  try {
+    await instance.post(`schedules/${user_account_id}/delete`, {
+      event_id: data.eventId,
+    });
+  } catch (error) {
+    const { data } = (await error.response) ?? error;
+    console.log(data);
+  }
+};

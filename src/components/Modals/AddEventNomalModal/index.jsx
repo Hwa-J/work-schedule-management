@@ -1,4 +1,3 @@
-import { useEvents, useEventsActions } from 'store/useEventsStore';
 import { useAddEventNomalModal, useModalsActions } from 'store/useModalStore';
 import {
   useAddEventValue,
@@ -12,44 +11,27 @@ import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import * as S from '../AddEventNomalModal/style';
 import { useAddEvent } from 'util/hooks/useAddEvent';
 
+import useLoggedUserStore from 'store/useLoggedUserStore';
+
 export const AddEventNomalModal = () => {
   const addEventValue = useAddEventValue();
   const { setAddEventValue } = useAddEventValueActions();
-  const events = useEvents();
-  // const { add } = useEventsActions();
   const addEventNomalModal = useAddEventNomalModal();
   const { showAddEventNomalModal } = useModalsActions();
-  // console.log(addEventValue);
-  const mutation = useAddEvent();
-
+  const add = useAddEvent();
+  const { name, email, id } = useLoggedUserStore();
   const getRadioValue = (e) => {
     const value = e.target.id;
-    // todo: UserStore에서 user_account_id, name, email 정보 가져오기
     setAddEventValue({ category: value });
   };
   const handleAddEvent = async () => {
     if (addEventValue.category) {
-      // todo: api 연결시 요청값은 addEventValue 보내기
-      // todo: api 연결시 반환값을 add 액션 함수의 인수로 넣기
-      console.log(addEventValue);
-      mutation.mutate({
-        ...addEventValue,
-        id: `11`,
-        name: '가나다', // 테스트용 고정값
-        email: '001@gamil.com', // 테스트용 고정값
-        user_account_id: '001', // 테스트용 고정값
-        event_id: `${events.length + 1}`, // 테스트용 고정값
-        isDraggable: true,
+      add.mutate({
+        id,
+        addEventValue: {
+          ...addEventValue,
+        },
       });
-      // await add({
-      //   start: new Date(addEventValue.start),
-      //   end: new Date(addEventValue.end),
-      //   category: addEventValue.category,
-      //   name: '가나다', // 테스트용 고정값
-      //   user_account_id: '001', // 테스트용 고정값
-      //   event_id: `${events.length + 1}`, // 테스트용 고정값
-      //   isDraggable: true,
-      // });
       await showAddEventNomalModal(false);
     } else {
       alert('일정 종류를 선택해 주세요.');
@@ -74,12 +56,7 @@ export const AddEventNomalModal = () => {
               이름
             </Form.Label>
             <Col sm="5">
-              <Form.Control
-                plaintext
-                readOnly
-                // todo: UserStore에서 name 가져오기
-                defaultValue={'로그인한 유저 이름'}
-              />
+              <Form.Control plaintext readOnly defaultValue={name} />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3 centerAlign">
@@ -87,12 +64,7 @@ export const AddEventNomalModal = () => {
               E-Mail
             </Form.Label>
             <Col sm="5">
-              <Form.Control
-                plaintext
-                readOnly
-                // todo: UserStore에서 email 가져오기
-                defaultValue={'로그인한 유저 email'}
-              />
+              <Form.Control plaintext readOnly defaultValue={email} />
             </Col>
           </Form.Group>
 
@@ -127,19 +99,19 @@ export const AddEventNomalModal = () => {
             </Form.Label>
             <Col sm="5">
               <Form.Check.Input
-                id="연차"
+                id="LEAVE"
                 name="category"
                 type="radio"
                 onClick={getRadioValue}
               />
-              <Form.Check.Label htmlFor="연차">연차</Form.Check.Label>
+              <Form.Check.Label htmlFor="LEAVE">연차</Form.Check.Label>
               <Form.Check.Input
-                id="당직"
+                id="DUTY"
                 name="category"
                 type="radio"
                 onClick={getRadioValue}
               />
-              <Form.Check.Label htmlFor="당직">당직</Form.Check.Label>
+              <Form.Check.Label htmlFor="DUTY">당직</Form.Check.Label>
             </Col>
           </Form.Group>
         </S.ModalForm>
