@@ -2,12 +2,11 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FormLabel } from 'react-bootstrap';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { SearchBarContainer } from './style';
 import SearchList from './SearchList';
-import axios from 'axios';
-import useAuthStore from 'store/useAuthStore';
 import useSearchStore from 'store/useSearchStore';
+import { instance } from 'api';
 
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
@@ -17,7 +16,6 @@ const SearchBar = () => {
   const setSearchId = useSearchStore((state) => state.setId);
   const setSearchName = useSearchStore((state) => state.setName);
   const setSearchEmail = useSearchStore((state) => state.setEmail);
-  const { token } = useAuthStore();
 
   const handleChange = (e) => {
     setKeyword(e.target.value);
@@ -28,16 +26,12 @@ const SearchBar = () => {
     if (keyword === '') {
       alert('검색어를 입력해 주세요');
     } else {
-      axios
-        .get(`http://54.180.9.59:8080/api/users?name=${keyword}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(function (res) {
+      instance
+        .get(`/users?name=${keyword}`)
+        .then((res) => {
           setUsers(res.data.users);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     }

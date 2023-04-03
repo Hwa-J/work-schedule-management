@@ -1,28 +1,136 @@
 import axios from 'axios';
 import { getDateToSlashForm } from 'util/getDateToCustomForm';
 
-const localData = localStorage.getItem('access_token');
-const token = JSON.parse(localData).state.token;
-const instance = axios.create({
+// access 토큰 인증이 필요한 instance
+export const instance = axios.create({
   baseURL: 'http://54.180.9.59:8080/api',
 });
-// instance.defaults.headers.common['Authorization'] = token
-//   ? `Bearer ${token}`
-//   : null;
 
+// // instance의 request header에 access token 넣어주기
 instance.interceptors.request.use(
-  function (config) {
-    config.headers['Content-Type'] = 'application/json; charset=utf-8';
-    config.headers['Authorization'] = `Bearer ${token}`;
+  async (config) => {
+    const getToken = localStorage.getItem('access_token');
+    const accessToken = JSON.parse(getToken).state.token;
+
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+
     return config;
   },
-  function (error) {
+  (error) => {
     console.log(error);
     return Promise.reject(error);
   },
 );
 
-export default instance;
+// 모든 responese에서 토큰 만료시 재발급 해주기 => 실패
+// instance.interceptors.response.use(
+//   (response) => {
+//     console.log('리스폰스');
+
+//     return response;
+//   },
+//   async (error) => {
+//     console.log(error);
+//     const {
+//       config,
+//       response: { status },
+//     } = error;
+//     if (status === 400) {
+//       console.log('400캐치');
+//       if (error.response.data.errorCode === 1) {
+//         console.log(error.response.data.errorMessage);
+
+//         const prevRequest = config;
+//         console.log(prevRequest);
+
+//         // const setToken = useAuthStore((state) => state.setToken);
+//         const { token } = useAuthStore.getState();
+//         console.log(token);
+
+//         const [cookies] = useCookies(['refresh_token']);
+//         const refreshToken = await cookies.refresh_token;
+//         console.log(refreshToken);
+
+//         const { newAccessToken } = await axios
+//           .post('http://54.180.9.59:8080/api/refresh', {
+//             accessToken: token,
+//             refreshToken: refreshToken,
+//           })
+//           .then((res) => {
+//             return {
+//               newAccessToken: res.data.accessToken,
+//             };
+//           })
+//           .catch((err) => {
+//             // 여기서도 에러 잡히면 강제 로그아웃 처리
+//           });
+
+//         // await setToken(newAccessToken);
+//         prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+//         return axios(prevRequest);
+//       }
+//     }
+//     return Promise.reject(error);
+//   },
+// );
+
+// 위의 방식으로는 store와 cookie에 접근이 안되서 함수 형태로 export 해주고 최상단 컴포넌트에서 실행 예정
+export const setupInterceptor = (accessToken, refreshToken, setToken) => {
+  instance.interceptors.response.use(
+    (response) => {
+      console.log('이상없이 response');
+
+      return response;
+    },
+    async (error) => {
+      console.log(error);
+      const {
+        config,
+        response: { status },
+      } = error;
+      if (status === 400) {
+        console.log('400캐치');
+        // 토큰 만료 response 받았을 때,
+        if (error.response.data.errorCode === 1) {
+          const prevRequest = config;
+          console.log(prevRequest);
+          console.log(accessToken);
+          console.log(refreshToken);
+
+          // 새로운 토큰으로 재발급
+          const { newAccessToken } = await axios
+            .post('http://54.180.9.59:8080/api/refresh', {
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+            })
+            .then((res) => {
+              return {
+                newAccessToken: res.data.accessToken,
+              };
+            })
+            .catch((err) => {
+              // 여기서도 에러 잡히면 강제 로그아웃 처리
+              // return {
+              //   newAccessToken: null
+              // }
+            });
+
+          // 새로 받은 토큰 store에 저장
+          await setToken(newAccessToken);
+
+          // 이전 요청의 헤더에 새로운 토큰 넣고
+          prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          console.log('인터셉트 성공');
+
+          // 이전 요청 다시 실행
+          return axios(prevRequest);
+        }
+      }
+      return Promise.reject(error);
+    },
+  );
+};
 
 export const USER_DATA = JSON.parse(localStorage.getItem('user_data'));
 const { id } = USER_DATA.state;

@@ -11,15 +11,21 @@ const SearchList = ({ onClick, users }) => {
           <Col sm={2}></Col>
           <Col sm={10}>
             <ul className="searchListWrapper">
-              {users.map((user) => (
-                <li
-                  key={user.id}
-                  onClick={() => onClick(user.id, user.name, user.email)}
-                >
-                  <span className="name">{user.name}</span>
-                  <span className="email">{user.email}</span>
-                </li>
-              ))}
+              {users[0] ? (
+                users.map((user) => (
+                  <li
+                    key={user.id}
+                    onClick={() => onClick(user.id, user.name, user.email)}
+                  >
+                    <span className="name">{user.name}</span>
+                    <span className="email">{user.email}</span>
+                  </li>
+                ))
+              ) : (
+                <p className="noResult">
+                  검색 결과가 없습니다. 검색어를 확인해 주세요.
+                </p>
+              )}
             </ul>
           </Col>
         </Form.Group>

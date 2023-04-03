@@ -10,9 +10,8 @@ import {
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import * as S from '../AddEventNomalModal/style';
 import { useAddEvent } from 'util/hooks/useAddEvent';
-import { USER_DATA } from 'api';
 
-const { id, name, email } = USER_DATA.state;
+import useLoggedUserStore from 'store/useLoggedUserStore';
 
 export const AddEventNomalModal = () => {
   const addEventValue = useAddEventValue();
@@ -20,7 +19,7 @@ export const AddEventNomalModal = () => {
   const addEventNomalModal = useAddEventNomalModal();
   const { showAddEventNomalModal } = useModalsActions();
   const add = useAddEvent();
-
+  const { name, email, id } = useLoggedUserStore();
   const getRadioValue = (e) => {
     const value = e.target.id;
     setAddEventValue({ category: value });

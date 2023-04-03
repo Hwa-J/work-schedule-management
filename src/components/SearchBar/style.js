@@ -22,5 +22,9 @@ export const SearchListContainer = styled.div`
         background-color: #e8f1ff;
       }
     }
+    .noResult {
+      text-align: center;
+      color: #666;
+    }
   }
 `;

@@ -11,26 +11,32 @@ import useAuthStore from 'store/useAuthStore';
 import RequireAuth from 'RequireAuth';
 import RequireRole from 'ReruireRole';
 import { Layout } from 'components/Main/Layout';
+import { setupInterceptor } from 'api';
+import { useCookies } from 'react-cookie';
 
 function App() {
   const { token } = useAuthStore();
+  const setToken = useAuthStore((state) => state.setToken);
+
+  const [cookies] = useCookies(['refresh_token']);
+  const refreshToken = cookies.refresh_token;
+
+  setupInterceptor(token, refreshToken, setToken);
 
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
-        {/* <Route path="/" element={token ? <Main /> : <LogIn />} /> */}
-        <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
-        {/* <Route element={<RequireAuth />}> */}
-        <Route element={<Layout />}>
-          <Route path="/main" element={<Main />} />
-          <Route path="/mypage" element={<MyInfo />} />
-          {/* <Route element={<RequireRole />}> */}
-          <Route path="/role" element={<RoleManage />} />
-          {/* </Route> */}
+        <Route element={token ? <Layout /> : null}>
+          <Route path="/" element={token ? <Main /> : <LogIn />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/mypage" element={<MyInfo />} />
+            <Route element={<RequireRole />}>
+              <Route path="/role" element={<RoleManage />} />
+            </Route>
+          </Route>
         </Route>
-        {/* </Route> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
