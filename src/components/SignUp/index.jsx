@@ -39,7 +39,6 @@ const SignUpForm = () => {
         if ((!e.target.value || (userIdRegex.test(e.target.value)))) setUsernameError(false);
         else setUsernameError(true);
         setUsername(e.target.value);
-        console.log(setUsernameError);
     };
     const onChangeName = (e) => {
         //이름은 2~5글자 한글로 입력
@@ -59,7 +58,7 @@ const SignUpForm = () => {
     }
     // 이메일 유효성 검사
     const checkEmail = (e) => {
-        var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+        var regExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
         // 형식에 맞는 경우 true 리턴
         if ((!e.target.value || (regExp.test(e.target.value)))) setEmailError(false)
         else setEmailError(true);
@@ -175,7 +174,10 @@ const SignUpForm = () => {
                             />
                         </InputBox>
                     </Form.Group>
-                    <Button type="submit">회원가입</Button>
+                    <Button
+                        style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', bottom: '20px' }}
+                        type="submit"
+                    >회원가입</Button>
                 </FormContainer>
             </RegisterStyle>
         </form >
