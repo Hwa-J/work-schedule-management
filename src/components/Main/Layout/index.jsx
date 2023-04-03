@@ -20,9 +20,9 @@ export const Layout = () => {
           <Row>
             <Header />
           </Row>
-          <S.RowFilledToMaxHeight>
+          <S.OutletContainer>
             <Outlet />
-          </S.RowFilledToMaxHeight>
+          </S.OutletContainer>
         </Col>
       </Row>
     </Container>

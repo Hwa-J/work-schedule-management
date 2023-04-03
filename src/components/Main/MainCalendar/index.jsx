@@ -12,7 +12,6 @@ import { ToolBarComponent } from './CalendarToolBar';
 import * as S from './style';
 import { useEditEvent } from 'util/hooks/useEditEvent';
 import { useGetMonthEvents } from 'util/hooks/useGetMonthEvents';
-import { USER_DATA } from 'api';
 
 moment.tz.setDefault('Asia/Seoul');
 const localizer = momentLocalizer(moment);
@@ -27,8 +26,6 @@ const handleChange = () => {
   console.log('this block code executed');
 };
 
-const { id } = USER_DATA.state;
-
 export const MainCalendar = () => {
   const { showAddEventNomalModal, showDeleteEventModal } = useModalsActions();
   const { setAddEventValue, resetAddEventValue } = useAddEventValueActions();
@@ -42,16 +39,13 @@ export const MainCalendar = () => {
     error,
     data: events,
   } = useGetMonthEvents(moment().year(), moment().month() + 1);
-  // console.log(events);
+  console.log(events);
 
   const eventPropGetter = useCallback(
     (event) => ({
-      ...(event.isDraggable
-        ? { className: 'isDraggable' }
-        : { className: 'nonDraggable' }),
-      ...(event.category === 'DUTY'
-        ? { className: 'red' }
-        : { className: 'blue' }),
+      className: `
+      ${event.isDraggable ? 'isDraggable' : 'nonDraggable'}
+      ${event.category === 'DUTY' ? 'red' : 'blue'}`,
     }),
     [],
   );
@@ -77,9 +71,8 @@ export const MainCalendar = () => {
 
   // 날짜 더블클릭 일정 삭제
   const deleteEvent = async (data) => {
-    // user_account_id가 일치하는 것만 삭제 가능
-    // todo: 관리자 계정은 모든 일정 삭제 가능하도록 수정
-    if (data.id !== id) return;
+    // user id가 일치 or 관리자만 삭제 가능
+    if (!data.isDraggable) return;
     await setDeleteEventValue(data);
     // 일정 삭제 확인 모달창 열기
     await showDeleteEventModal(true);
@@ -93,7 +86,6 @@ export const MainCalendar = () => {
         draggableAccessor="isDraggable"
         eventPropGetter={eventPropGetter}
         events={events}
-        // events={filteredEvents.length === 0 ? events : filteredEvents}
         localizer={localizer}
         onEventDrop={editEvent}
         onEventResize={editEvent}
@@ -102,8 +94,7 @@ export const MainCalendar = () => {
         resizable
         selectable
         popup
-        style={{ width: 'auto', height: '80vh' }}
-        views={''}
+        views=""
         onNavigate={handleNavigation}
         components={{
           event: EventComponent({ handleChange }),
