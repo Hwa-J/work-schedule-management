@@ -1,6 +1,4 @@
 import axios from 'axios';
-import useAuthStore from 'store/useAuthStore';
-import { useCookies } from 'react-cookie';
 import { getDateToSlashForm } from 'util/getDateToCustomForm';
 
 // access 토큰 인증이 필요한 instance
@@ -113,6 +111,9 @@ export const setupInterceptor = (accessToken, refreshToken, setToken) => {
             })
             .catch((err) => {
               // 여기서도 에러 잡히면 강제 로그아웃 처리
+              // return {
+              //   newAccessToken: null
+              // }
             });
 
           // 새로 받은 토큰 store에 저장

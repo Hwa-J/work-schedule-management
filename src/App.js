@@ -27,18 +27,16 @@ function App() {
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
-        {/* <Route path="/" element={token ? <Main /> : <LogIn />} /> */}
-        <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
-        {/* <Route element={<RequireAuth />}> */}
-        <Route element={<Layout />}>
-          <Route path="/main" element={<Main />} />
-          <Route path="/mypage" element={<MyInfo />} />
-          {/* <Route element={<RequireRole />}> */}
-          <Route path="/role" element={<RoleManage />} />
-          {/* </Route> */}
+        <Route element={token ? <Layout /> : null}>
+          <Route path="/" element={token ? <Main /> : <LogIn />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/mypage" element={<MyInfo />} />
+            <Route element={<RequireRole />}>
+              <Route path="/role" element={<RoleManage />} />
+            </Route>
+          </Route>
         </Route>
-        {/* </Route> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

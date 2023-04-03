@@ -8,7 +8,7 @@ export const SideBar = () => {
   return (
     <S.SideBar>
       <div>
-        <S.PageLink to="/main">Main</S.PageLink>
+        <S.PageLink to="/">Main</S.PageLink>
         <S.PageLink to="/mypage">MyPage</S.PageLink>
         <div>
           {/* todo: 관리자 role만 링크 버튼 보여주기 */}
