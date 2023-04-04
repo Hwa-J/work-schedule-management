@@ -53,6 +53,11 @@ const LoginForm = () => {
         })
         .catch((error) => {
           console.log(error);
+          if (error.response.data.errorCode === 6) {
+            alert('ID 또는 비밀번호를 다시 확인해 주세요.');
+          } else if (error.response.data.errorCode === 22) {
+            alert('입력하신 회원 정보를 찾지 못했습니다.  다시 확인해 주세요.');
+          }
         });
     }
   };
