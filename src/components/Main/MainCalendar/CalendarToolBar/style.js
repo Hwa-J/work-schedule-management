@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 // 캘린더 툴 바 커스텀
 export const ToolBar = styled.div`
-  position: relative;
   align-items: end;
+  justify-content: space-between;
 
   button {
     height: 24px;
@@ -15,6 +15,7 @@ export const ToolBar = styled.div`
   }
 
   .rbc-btn-container.centerAlign {
+    padding-right: 100px;
     align-items: end;
   }
 `;
@@ -30,9 +31,4 @@ export const CurrentMonthInfo = styled.div`
     font-size: 24px;
     font-weight: 600;
   }
-`;
-// 캘린더 툴 바 이번달 버튼 커스텀
-export const TodayMonthButton = styled.button`
-  position: absolute;
-  right: 0;
 `;
