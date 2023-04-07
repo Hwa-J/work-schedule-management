@@ -15,9 +15,15 @@ export const Header = () => {
       <S.HeaderRow>
         <Col className="d-block d-lg-none d-xl-none">
           <GiHamburgerMenu onClick={() => setIsShow(!isShow)} />
-          <S.HeaderSideBarContainer className={isShow ? 'show' : ''}>
-            <SideBar />
-          </S.HeaderSideBarContainer>
+          <S.SideBarBackground
+            onClick={() => setIsShow(!isShow)}
+            className={isShow ? 'show' : ''}
+          >
+            <S.HeaderSideBarContainer>
+              <SideBar />
+            </S.HeaderSideBarContainer>
+            <S.CloseSvg />
+          </S.SideBarBackground>
         </Col>
         <Col>
           <S.UserInfoContainer>

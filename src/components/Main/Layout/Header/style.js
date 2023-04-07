@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Row } from 'react-bootstrap';
+import { GrClose } from 'react-icons/gr';
 
 // Header 스타일
 export const HeaderRow = styled(Row).attrs({ className: 'centerAlign' })`
@@ -12,18 +13,40 @@ export const HeaderRow = styled(Row).attrs({ className: 'centerAlign' })`
     cursor: pointer;
   }
 `;
+
+// 사이드바 뒷 배경
+export const SideBarBackground = styled.div`
+  width: calc(100vw - 12px);
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  background-color: #000000ab;
+  z-index: 10;
+  visibility: hidden;
+
+  &.show {
+    visibility: visible;
+  }
+`;
+export const CloseSvg = styled(GrClose)`
+  position: absolute;
+  right: 14%;
+  top: 50%;
+  font-size: 24px !important;
+  path {
+    stroke: #fff;
+  }
+`;
+
 export const HeaderSideBarContainer = styled.div`
-  width: 100%;
-  height: calc(100vh - 35px);
-  padding-top: 10px;
+  width: 70%;
   position: absolute;
   overflow: hidden;
   transition: 0.5s;
   visibility: hidden;
   transform: translateX(-100%);
-  z-index: 5;
 
-  &.show {
+  .show & {
     visibility: visible;
     transform: translateX(-14px);
   }
