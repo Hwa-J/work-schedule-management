@@ -3,11 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { InputBox, Wthdr } from 'components/SignUp/style';
-import { FormContainer } from 'components/Common/FormContainer';
 import useAuthStore from 'store/useAuthStore';
 import useLoggedUserStore from 'store/useLoggedUserStore';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import * as S from './style';
 
 const MyInfoPage = () => {
   const [username, setUsername] = useState('');
@@ -162,17 +162,9 @@ const MyInfoPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <S.StyledForm onSubmit={handleSubmit}>
       <div>
-        <FormContainer
-          style={{
-            width: 800,
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
+        <S.StyledFormContainer>
           <Form.Group className="mb-3">
             <InputBox>
               <Form.Label>ID</Form.Label>
@@ -232,9 +224,9 @@ const MyInfoPage = () => {
             회원정보 수정
           </Button>
           <Wthdr onClick={handleWithdrawal}>회원 탈퇴</Wthdr>
-        </FormContainer>
+        </S.StyledFormContainer>
       </div>
-    </form>
+    </S.StyledForm>
   );
 };
 
