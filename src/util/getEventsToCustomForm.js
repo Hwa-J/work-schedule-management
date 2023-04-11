@@ -2,7 +2,6 @@ import { getDateToSlashForm } from 'util/getDateToCustomForm';
 
 export const getEventsToCustomForm = (event, user) => ({
   ...event,
-  id: event.createdBy,
   // 'YYYY/MM/DD' 날짜형식으로 변경
   start: new Date(getDateToSlashForm(event.start)),
   end: new Date(getDateToSlashForm(event.end)),

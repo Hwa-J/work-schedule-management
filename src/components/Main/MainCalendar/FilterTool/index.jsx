@@ -1,29 +1,16 @@
-import { useEventsActions } from 'store/useEventsStore';
 import * as S from './style';
 import { Col, Form } from 'react-bootstrap';
-import { useCallback } from 'react';
+import { useSelectedFiltersActions } from 'store/useSelectedFilterStore';
 
 export const FilterTool = () => {
-  const { filter, filterMyEvents } = useEventsActions();
+  const { setFilter, setShowMyEvents } = useSelectedFiltersActions();
 
-  const handleSelectedValue = useCallback(
-    ({ target }) => {
-      filter(target.value);
-    },
-    [filter],
-  );
-  const handleCheckedValue = useCallback(
-    ({ target }) => {
-      filterMyEvents(target.checked);
-    },
-    [filterMyEvents],
-  );
   return (
     <S.FilterTool>
       <Col>
         <Form.Select
           defaultValue={'모두 보기'}
-          onChange={handleSelectedValue}
+          onChange={(e) => setFilter(e.target.value)}
           size="sm"
         >
           <option>모두 보기</option>
@@ -38,7 +25,7 @@ export const FilterTool = () => {
             id="default-checkbox"
             label="내 일정만 보기"
             className="centerAlign"
-            onChange={handleCheckedValue}
+            onChange={setShowMyEvents}
           />
         </S.SwitchForm>
       </Col>
