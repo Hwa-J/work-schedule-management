@@ -25,7 +25,7 @@ export const FilterTool = () => {
             id="default-checkbox"
             label="내 일정만 보기"
             className="centerAlign"
-            onChange={setShowMyEvents}
+            onChange={(e) => setShowMyEvents(e.target.checked)}
           />
         </S.SwitchForm>
       </Col>

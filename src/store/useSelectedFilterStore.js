@@ -5,8 +5,7 @@ const useSelectedFilters = create((set) => ({
   showMyEvents: false,
   actions: {
     setFilter: (filter) => set(() => ({ filter })),
-    setShowMyEvents: () =>
-      set((state) => ({ showMyEvents: !state.showMyEvents })),
+    setShowMyEvents: (boolean) => set(() => ({ showMyEvents: boolean })),
   },
 }));
 
