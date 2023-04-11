@@ -12,11 +12,8 @@ import { ToolBarComponent } from './CalendarToolBar';
 import * as S from './style';
 import { useEditEvent } from 'util/hooks/useEditEvent';
 import { useGetMonthEvents } from 'util/hooks/useGetMonthEvents';
-import {
-  useMonth,
-  useYear,
-  useYearMonthActions,
-} from 'store/useYearMonthStore';
+import { useYearMonthActions } from 'store/useYearMonthStore';
+import { useFilter, useShowMyEvents } from 'store/useSelectedFilterStore';
 
 moment.tz.setDefault('Asia/Seoul');
 const localizer = momentLocalizer(moment);
@@ -28,12 +25,13 @@ export const MainCalendar = () => {
   // 일정 수정 서버 통신코드 가져오기
   const edit = useEditEvent();
   // 현재 캘린더의 날짜 정보 가져오기
-  const year = useYear();
-  const month = useMonth();
   const { getDate } = useYearMonthActions();
+  // FilterTool의 category 선택값, 내 일정만 보기 체크값 가져오기
+  const filter = useFilter();
+  const showMyEvents = useShowMyEvents();
 
   // 서버에서 일정 데이터 가져오기
-  const { isLoading, error, data: events } = useGetMonthEvents(year, month);
+  const { isLoading, error, events } = useGetMonthEvents(filter, showMyEvents);
   console.log(events);
 
   const handleNavigation = (date) => {
