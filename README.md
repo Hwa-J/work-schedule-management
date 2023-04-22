@@ -1,14 +1,14 @@
 ## 📋개요
 
 📆연차 및 당직 관리 웹 서비스 구현 미니프로젝트 팀 Repo.
+(개인적으로 업그레이드 중)
 
 ## 🔖데모
 
-[데모사이트 가기](http://devcastle.s3-website.ap-northeast-2.amazonaws.com/)
-
 일반 계정
 
-> 가입하고 로그인
+> ID : chan1 (~9까지 생성)  
+> PW : @chan123
 
 관리자 계정
 
