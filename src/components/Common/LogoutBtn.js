@@ -4,7 +4,7 @@ import useAuthStore from 'store/useAuthStore';
 import useLoggedUserStore from 'store/useLoggedUserStore';
 
 const LogoutBtn = () => {
-  const [cookies, removeCookies] = useCookies(['refresh_token']);
+  const [, removeCookies] = useCookies(['refresh_token']);
   const setStoreToken = useAuthStore((state) => state.setToken);
   const setId = useLoggedUserStore((state) => state.setId);
   const setUsername = useLoggedUserStore((state) => state.setUsername);

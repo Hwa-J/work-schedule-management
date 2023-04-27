@@ -33,13 +33,13 @@ export const ToolBarComponent = (props) => {
           <IoIosArrowForward />
         </button>
       </div>
-      <S.TodayMonthButton
+      <button
         type="button"
         className="centerAlign"
         onClick={navigate.bind(null, 'TODAY')}
       >
         이번달
-      </S.TodayMonthButton>
+      </button>
     </S.ToolBar>
   );
 };

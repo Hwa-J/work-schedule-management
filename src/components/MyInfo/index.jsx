@@ -3,11 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { InputBox, Wthdr } from 'components/SignUp/style';
-import { FormContainer } from 'components/Common/FormContainer';
 import useAuthStore from 'store/useAuthStore';
 import useLoggedUserStore from 'store/useLoggedUserStore';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import * as S from './style';
 
 const MyInfoPage = () => {
   const [username, setUsername] = useState('');
@@ -22,7 +22,7 @@ const MyInfoPage = () => {
   const { token } = useAuthStore(); //token가져옴
   const user = useLoggedUserStore(); //로그인 유저정보를 user로 담음
 
-  const [cookies, removeCookies] = useCookies(['refresh_token']);
+  const [, removeCookies] = useCookies(['refresh_token']);
   const setStoreToken = useAuthStore((state) => state.setToken);
   const setLoggedId = useLoggedUserStore((state) => state.setId);
   const setLoggedUsername = useLoggedUserStore((state) => state.setUsername);
@@ -70,10 +70,10 @@ const MyInfoPage = () => {
     else return false;
   };
 
-  const navi = useNavigate();
-  const loginNavi = () => {
-    navi('/');
-  };
+  // const navi = useNavigate();
+  // const loginNavi = () => {
+  //   navi('/');
+  // };
 
   useEffect(() => {
     //백엔드에서 받아오는회원정보O
@@ -162,17 +162,9 @@ const MyInfoPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <S.StyledForm onSubmit={handleSubmit}>
       <div>
-        <FormContainer
-          style={{
-            width: 800,
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
+        <S.StyledFormContainer>
           <Form.Group className="mb-3">
             <InputBox>
               <Form.Label>ID</Form.Label>
@@ -232,9 +224,9 @@ const MyInfoPage = () => {
             회원정보 수정
           </Button>
           <Wthdr onClick={handleWithdrawal}>회원 탈퇴</Wthdr>
-        </FormContainer>
+        </S.StyledFormContainer>
       </div>
-    </form>
+    </S.StyledForm>
   );
 };
 

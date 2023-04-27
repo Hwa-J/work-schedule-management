@@ -1,21 +1,20 @@
 import styled from 'styled-components';
-import { Form } from 'react-bootstrap';
+import { Form, Row } from 'react-bootstrap';
 
-export const FilterTool = styled.div.attrs({
+export const FilterTool = styled(Row).attrs({
   className: 'centerAlign',
 })`
   padding-left: 10px;
-  position: absolute;
-  left: 0;
 `;
 export const SwitchForm = styled(Form)`
+  width: max-content;
   flex-shrink: 0;
 
   label {
     padding-left: 8px;
   }
   .form-check {
-    padding-left: 30px;
+    padding-left: 0px;
     margin-bottom: 0;
   }
   .form-check .form-check-input {

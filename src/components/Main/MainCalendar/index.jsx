@@ -12,22 +12,11 @@ import { ToolBarComponent } from './CalendarToolBar';
 import * as S from './style';
 import { useEditEvent } from 'util/hooks/useEditEvent';
 import { useGetMonthEvents } from 'util/hooks/useGetMonthEvents';
-import { USER_DATA } from 'api';
+import { useYearMonthActions } from 'store/useYearMonthStore';
+import { useFilter, useShowMyEvents } from 'store/useSelectedFilterStore';
 
 moment.tz.setDefault('Asia/Seoul');
 const localizer = momentLocalizer(moment);
-
-// todo: 네비게이션 클릭시 실행될 이벤트
-const handleNavigation = (date, view, action) => {
-  console.log(date, view, action);
-  //it returns current date, view options[month,day,week,agenda] and action like prev, next or today
-};
-// todo: 이벤트 바 클릭시 실행될 이벤트
-const handleChange = () => {
-  console.log('this block code executed');
-};
-
-const { id } = USER_DATA.state;
 
 export const MainCalendar = () => {
   const { showAddEventNomalModal, showDeleteEventModal } = useModalsActions();
@@ -35,23 +24,26 @@ export const MainCalendar = () => {
   const { setDeleteEventValue } = useDeleteEventValueActions();
   // 일정 수정 서버 통신코드 가져오기
   const edit = useEditEvent();
+  // 현재 캘린더의 날짜 정보 가져오기
+  const { getDate } = useYearMonthActions();
+  // FilterTool의 category 선택값, 내 일정만 보기 체크값 가져오기
+  const filter = useFilter();
+  const showMyEvents = useShowMyEvents();
 
   // 서버에서 일정 데이터 가져오기
-  const {
-    isLoading,
-    error,
-    data: events,
-  } = useGetMonthEvents(moment().year(), moment().month() + 1);
-  // console.log(events);
+  const { events } = useGetMonthEvents(filter, showMyEvents);
+  console.log(events);
+
+  const handleNavigation = (date) => {
+    // 네비게이션 클릭시 YearMonthStore 날짜 변경
+    getDate(date);
+  };
 
   const eventPropGetter = useCallback(
     (event) => ({
-      ...(event.isDraggable
-        ? { className: 'isDraggable' }
-        : { className: 'nonDraggable' }),
-      ...(event.category === 'DUTY'
-        ? { className: 'red' }
-        : { className: 'blue' }),
+      className: `
+      ${event.isDraggable ? 'isDraggable' : 'nonDraggable'}
+      ${event.category === 'DUTY' ? 'red' : 'blue'}`,
     }),
     [],
   );
@@ -77,9 +69,8 @@ export const MainCalendar = () => {
 
   // 날짜 더블클릭 일정 삭제
   const deleteEvent = async (data) => {
-    // user_account_id가 일치하는 것만 삭제 가능
-    // todo: 관리자 계정은 모든 일정 삭제 가능하도록 수정
-    if (data.id !== id) return;
+    // user id가 일치 or 관리자만 삭제 가능
+    if (!data.isDraggable) return;
     await setDeleteEventValue(data);
     // 일정 삭제 확인 모달창 열기
     await showDeleteEventModal(true);
@@ -93,7 +84,6 @@ export const MainCalendar = () => {
         draggableAccessor="isDraggable"
         eventPropGetter={eventPropGetter}
         events={events}
-        // events={filteredEvents.length === 0 ? events : filteredEvents}
         localizer={localizer}
         onEventDrop={editEvent}
         onEventResize={editEvent}
@@ -102,11 +92,10 @@ export const MainCalendar = () => {
         resizable
         selectable
         popup
-        style={{ width: 'auto', height: '80vh' }}
-        views={''}
+        views=""
         onNavigate={handleNavigation}
         components={{
-          event: EventComponent({ handleChange }),
+          event: EventComponent,
           toolbar: ToolBarComponent,
         }}
       />
@@ -114,15 +103,12 @@ export const MainCalendar = () => {
   );
 };
 
-// design html for event tile
 // 이벤트 바 커스텀
-const EventComponent =
-  ({ handleChange }) =>
-  (props) => {
-    const { event } = props;
-    return (
-      <S.EventBar title={event.email}>
-        <h5 onClick={handleChange}>{event.name}</h5>
-      </S.EventBar>
-    );
-  };
+const EventComponent = (props) => {
+  const { event } = props;
+  return (
+    <S.EventBar title={event.email}>
+      <h5>{event.name}</h5>
+    </S.EventBar>
+  );
+};
