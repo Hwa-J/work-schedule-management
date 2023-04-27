@@ -5,7 +5,7 @@ import axios from 'axios';
 import { InputBox, Wthdr } from 'components/SignUp/style';
 import useAuthStore from 'store/useAuthStore';
 import useLoggedUserStore from 'store/useLoggedUserStore';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import * as S from './style';
 
