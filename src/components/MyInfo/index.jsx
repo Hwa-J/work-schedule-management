@@ -70,10 +70,10 @@ const MyInfoPage = () => {
     else return false;
   };
 
-  const navi = useNavigate();
-  const loginNavi = () => {
-    navi('/');
-  };
+  // const navi = useNavigate();
+  // const loginNavi = () => {
+  //   navi('/');
+  // };
 
   useEffect(() => {
     //백엔드에서 받아오는회원정보O
