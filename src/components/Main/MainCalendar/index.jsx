@@ -31,7 +31,7 @@ export const MainCalendar = () => {
   const showMyEvents = useShowMyEvents();
 
   // 서버에서 일정 데이터 가져오기
-  const { isLoading, error, events } = useGetMonthEvents(filter, showMyEvents);
+  const { events } = useGetMonthEvents(filter, showMyEvents);
   console.log(events);
 
   const handleNavigation = (date) => {

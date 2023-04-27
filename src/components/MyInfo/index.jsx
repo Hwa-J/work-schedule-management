@@ -22,7 +22,7 @@ const MyInfoPage = () => {
   const { token } = useAuthStore(); //token가져옴
   const user = useLoggedUserStore(); //로그인 유저정보를 user로 담음
 
-  const [cookies, removeCookies] = useCookies(['refresh_token']);
+  const [, removeCookies] = useCookies(['refresh_token']);
   const setStoreToken = useAuthStore((state) => state.setToken);
   const setLoggedId = useLoggedUserStore((state) => state.setId);
   const setLoggedUsername = useLoggedUserStore((state) => state.setUsername);

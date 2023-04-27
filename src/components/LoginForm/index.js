@@ -11,7 +11,7 @@ import useLoggedUserStore from 'store/useLoggedUserStore';
 const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [cookies, setCookies] = useCookies(['refresh_token']);
+  const [, setCookies] = useCookies(['refresh_token']);
   const setStoreToken = useAuthStore((state) => state.setToken);
   const setId = useLoggedUserStore((state) => state.setId);
   const setUsername = useLoggedUserStore((state) => state.setUsername);
